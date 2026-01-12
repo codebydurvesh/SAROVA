@@ -1,0 +1,133 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base styles */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply font-sans text-savora-brown-800 bg-savora-cream antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif;
+  }
+}
+
+/* Custom component styles */
+@layer components {
+  /* Primary button */
+  .btn-primary {
+    @apply px-6 py-3 bg-savora-green-500 text-white font-medium rounded-xl
+           hover:bg-savora-green-600 transition-colors duration-200
+           focus:outline-none focus:ring-2 focus:ring-savora-green-400 focus:ring-offset-2;
+  }
+
+  /* Secondary button */
+  .btn-secondary {
+    @apply px-6 py-3 bg-savora-beige-200 text-savora-brown-700 font-medium rounded-xl
+           hover:bg-savora-beige-300 transition-colors duration-200
+           focus:outline-none focus:ring-2 focus:ring-savora-beige-400 focus:ring-offset-2;
+  }
+
+  /* Outline button */
+  .btn-outline {
+    @apply px-6 py-3 border-2 border-savora-brown-300 text-savora-brown-600 font-medium rounded-xl
+           hover:bg-savora-brown-50 transition-colors duration-200
+           focus:outline-none focus:ring-2 focus:ring-savora-brown-300 focus:ring-offset-2;
+  }
+
+  /* Card style */
+  .card {
+    @apply bg-white rounded-2xl shadow-soft p-6;
+  }
+
+  /* Input style */
+  .input {
+    @apply w-full px-4 py-3 bg-white border border-savora-beige-300 rounded-xl
+           text-savora-brown-800 placeholder-savora-brown-400
+           focus:outline-none focus:ring-2 focus:ring-savora-green-400 focus:border-transparent
+           transition-all duration-200;
+  }
+
+  /* Label style */
+  .label {
+    @apply block text-sm font-medium text-savora-brown-600 mb-2;
+  }
+
+  /* Link style */
+  .link {
+    @apply text-savora-green-600 hover:text-savora-green-700 underline-offset-2 hover:underline
+           transition-colors duration-200;
+  }
+
+  /* Nav link style */
+  .nav-link {
+    @apply text-savora-brown-600 hover:text-savora-green-600 font-medium
+           transition-colors duration-200;
+  }
+
+  /* Nav link active */
+  .nav-link-active {
+    @apply text-savora-green-600 font-semibold;
+  }
+}
+
+/* Utility classes */
+@layer utilities {
+  /* Hide scrollbar but keep functionality */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Text balance for better typography */
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Grid background pattern */
+  .bg-grid {
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23a8bfa8' fill-opacity='0.06'%3E%3Ccircle cx='1' cy='1' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+}
+
+/* Animation classes */
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Loading skeleton */
+.skeleton {
+  @apply animate-pulse bg-savora-beige-200 rounded;
+}
