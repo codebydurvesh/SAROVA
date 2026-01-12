@@ -1,4 +1,4 @@
-import ApiError from '../utils/ApiError.js';
+import ApiError from "../utils/ApiError.js";
 
 /**
  * Global error handling middleware
@@ -9,43 +9,45 @@ const errorHandler = (err, req, res, next) => {
   error.message = err.message;
 
   // Log error for debugging in development
-  if (process.env.NODE_ENV === 'development') {
-    console.error('❌ Error:', err);
+  if (process.env.NODE_ENV === "development") {
+    console.error("❌ Error:", err);
   }
 
   // Mongoose bad ObjectId
-  if (err.name === 'CastError') {
-    const message = 'Resource not found';
+  if (err.name === "CastError") {
+    const message = "Resource not found";
     error = new ApiError(404, message);
   }
 
   // Mongoose duplicate key
   if (err.code === 11000) {
-    const message = 'Duplicate field value entered';
+    const message = "Duplicate field value entered";
     error = new ApiError(400, message);
   }
 
   // Mongoose validation error
-  if (err.name === 'ValidationError') {
-    const message = Object.values(err.errors).map((val) => val.message).join(', ');
+  if (err.name === "ValidationError") {
+    const message = Object.values(err.errors)
+      .map((val) => val.message)
+      .join(", ");
     error = new ApiError(400, message);
   }
 
   // JWT errors
-  if (err.name === 'JsonWebTokenError') {
-    const message = 'Invalid token. Please log in again.';
+  if (err.name === "JsonWebTokenError") {
+    const message = "Invalid token. Please log in again.";
     error = new ApiError(401, message);
   }
 
-  if (err.name === 'TokenExpiredError') {
-    const message = 'Token expired. Please log in again.';
+  if (err.name === "TokenExpiredError") {
+    const message = "Token expired. Please log in again.";
     error = new ApiError(401, message);
   }
 
   res.status(error.statusCode || 500).json({
     success: false,
-    message: error.message || 'Internal Server Error',
-    ...(process.env.NODE_ENV === 'development' && { stack: err.stack }),
+    message: error.message || "Internal Server Error",
+    ...(process.env.NODE_ENV === "development" && { stack: err.stack }),
   });
 };
 

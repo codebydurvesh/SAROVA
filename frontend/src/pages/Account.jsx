@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { User, Mail, LogOut, Heart, ShoppingBag, Calendar } from 'lucide-react';
-import { useAuth } from '../context/AuthContext';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import { User, Mail, LogOut, Heart, ShoppingBag, Calendar } from "lucide-react";
+import { useAuth } from "../context/AuthContext";
 
 /**
  * Account page component
@@ -16,30 +16,30 @@ const Account = () => {
   const handleLogout = async () => {
     setIsLoggingOut(true);
     await logout();
-    navigate('/');
+    navigate("/");
   };
 
   const stats = [
     {
       icon: Heart,
-      label: 'Favorites',
+      label: "Favorites",
       value: user?.favorites?.length || 0,
-      color: 'text-red-500',
-      bgColor: 'bg-red-50',
+      color: "text-red-500",
+      bgColor: "bg-red-50",
     },
     {
       icon: ShoppingBag,
-      label: 'Orders',
+      label: "Orders",
       value: 0,
-      color: 'text-savora-green-600',
-      bgColor: 'bg-savora-green-50',
+      color: "text-savora-green-600",
+      bgColor: "bg-savora-green-50",
     },
     {
       icon: Calendar,
-      label: 'Meal Plans',
+      label: "Meal Plans",
       value: 1,
-      color: 'text-savora-brown-600',
-      bgColor: 'bg-savora-brown-50',
+      color: "text-savora-brown-600",
+      bgColor: "bg-savora-brown-50",
     },
   ];
 
@@ -71,41 +71,47 @@ const Account = () => {
               {/* Avatar */}
               <div className="w-20 h-20 bg-savora-green-100 rounded-full flex items-center justify-center flex-shrink-0">
                 <span className="text-3xl font-serif font-bold text-savora-green-600">
-                  {user?.name?.charAt(0)?.toUpperCase() || 'U'}
+                  {user?.name?.charAt(0)?.toUpperCase() || "U"}
                 </span>
               </div>
 
               {/* Details */}
               <div className="flex-1 space-y-4">
                 <div>
-                  <label className="text-sm text-savora-brown-500">Full Name</label>
+                  <label className="text-sm text-savora-brown-500">
+                    Full Name
+                  </label>
                   <div className="flex items-center gap-2 mt-1">
                     <User className="w-4 h-4 text-savora-brown-400" />
                     <span className="text-savora-brown-800 font-medium">
-                      {user?.name || 'Not set'}
+                      {user?.name || "Not set"}
                     </span>
                   </div>
                 </div>
 
                 <div>
-                  <label className="text-sm text-savora-brown-500">Email Address</label>
+                  <label className="text-sm text-savora-brown-500">
+                    Email Address
+                  </label>
                   <div className="flex items-center gap-2 mt-1">
                     <Mail className="w-4 h-4 text-savora-brown-400" />
                     <span className="text-savora-brown-800 font-medium">
-                      {user?.email || 'Not set'}
+                      {user?.email || "Not set"}
                     </span>
                   </div>
                 </div>
 
                 <div>
-                  <label className="text-sm text-savora-brown-500">Member Since</label>
+                  <label className="text-sm text-savora-brown-500">
+                    Member Since
+                  </label>
                   <p className="text-savora-brown-800 font-medium mt-1">
                     {user?.createdAt
-                      ? new Date(user.createdAt).toLocaleDateString('en-US', {
-                          month: 'long',
-                          year: 'numeric',
+                      ? new Date(user.createdAt).toLocaleDateString("en-US", {
+                          month: "long",
+                          year: "numeric",
                         })
-                      : 'January 2026'}
+                      : "January 2026"}
                   </p>
                 </div>
               </div>
@@ -123,7 +129,9 @@ const Account = () => {
               transition={{ delay: index * 0.1 }}
               className="card flex items-center gap-4"
             >
-              <div className={`w-12 h-12 ${stat.bgColor} rounded-xl flex items-center justify-center`}>
+              <div
+                className={`w-12 h-12 ${stat.bgColor} rounded-xl flex items-center justify-center`}
+              >
                 <stat.icon className={`w-6 h-6 ${stat.color}`} />
               </div>
               <div>
@@ -156,7 +164,7 @@ const Account = () => {
               className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 bg-red-50 text-red-600 font-medium rounded-xl hover:bg-red-100 transition-colors disabled:opacity-50"
             >
               <LogOut className="w-5 h-5" />
-              {isLoggingOut ? 'Signing out...' : 'Sign Out'}
+              {isLoggingOut ? "Signing out..." : "Sign Out"}
             </button>
           </div>
         </div>

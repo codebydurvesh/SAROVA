@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken';
+import jwt from "jsonwebtoken";
 
 /**
  * Generate JWT access token
@@ -7,7 +7,7 @@ import jwt from 'jsonwebtoken';
  */
 export const generateAccessToken = (payload) => {
   return jwt.sign(payload, process.env.JWT_ACCESS_SECRET, {
-    expiresIn: process.env.JWT_ACCESS_EXPIRES_IN || '15m',
+    expiresIn: process.env.JWT_ACCESS_EXPIRES_IN || "15m",
   });
 };
 
@@ -18,7 +18,7 @@ export const generateAccessToken = (payload) => {
  */
 export const generateRefreshToken = (payload) => {
   return jwt.sign(payload, process.env.JWT_REFRESH_SECRET, {
-    expiresIn: process.env.JWT_REFRESH_EXPIRES_IN || '7d',
+    expiresIn: process.env.JWT_REFRESH_EXPIRES_IN || "7d",
   });
 };
 
@@ -45,7 +45,7 @@ export const verifyRefreshToken = (token) => {
  */
 export const cookieOptions = {
   httpOnly: true,
-  secure: process.env.NODE_ENV === 'production',
-  sameSite: 'strict',
+  secure: process.env.NODE_ENV === "production",
+  sameSite: "strict",
   maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
 };

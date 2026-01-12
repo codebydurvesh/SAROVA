@@ -1,4 +1,4 @@
-import api from './api';
+import api from "./api";
 
 /**
  * Recipe service
@@ -10,7 +10,7 @@ const recipeService = {
    * @param {Object} params - { category, dietType, search, page, limit }
    */
   getRecipes: async (params = {}) => {
-    const response = await api.get('/recipes', { params });
+    const response = await api.get("/recipes", { params });
     return response.data;
   },
 
@@ -28,9 +28,9 @@ const recipeService = {
    * @param {FormData} formData - Recipe data with image
    */
   createRecipe: async (formData) => {
-    const response = await api.post('/recipes', formData, {
+    const response = await api.post("/recipes", formData, {
       headers: {
-        'Content-Type': 'multipart/form-data',
+        "Content-Type": "multipart/form-data",
       },
     });
     return response.data;

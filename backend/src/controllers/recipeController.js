@@ -1,7 +1,7 @@
-import Recipe from '../models/Recipe.js';
-import ApiError from '../utils/ApiError.js';
-import asyncHandler from '../utils/asyncHandler.js';
-import { cloudinary } from '../config/cloudinary.js';
+import Recipe from "../models/Recipe.js";
+import ApiError from "../utils/ApiError.js";
+import asyncHandler from "../utils/asyncHandler.js";
+import { cloudinary } from "../config/cloudinary.js";
 
 /**
  * @desc    Get all recipes
@@ -13,13 +13,13 @@ export const getRecipes = asyncHandler(async (req, res) => {
 
   // Build query
   const query = {};
-  
+
   if (category) query.category = category;
   if (dietType) query.dietType = dietType;
   if (search) {
     query.$or = [
-      { title: { $regex: search, $options: 'i' } },
-      { description: { $regex: search, $options: 'i' } },
+      { title: { $regex: search, $options: "i" } },
+      { description: { $regex: search, $options: "i" } },
     ];
   }
 
@@ -27,7 +27,7 @@ export const getRecipes = asyncHandler(async (req, res) => {
   const skip = (page - 1) * limit;
 
   const recipes = await Recipe.find(query)
-    .populate('author', 'name')
+    .populate("author", "name")
     .sort({ createdAt: -1 })
     .skip(skip)
     .limit(parseInt(limit));
@@ -55,11 +55,11 @@ export const getRecipes = asyncHandler(async (req, res) => {
  */
 export const getRecipeById = asyncHandler(async (req, res) => {
   const recipe = await Recipe.findById(req.params.id)
-    .populate('author', 'name')
-    .populate('comments.user', 'name');
+    .populate("author", "name")
+    .populate("comments.user", "name");
 
   if (!recipe) {
-    throw new ApiError(404, 'Recipe not found');
+    throw new ApiError(404, "Recipe not found");
   }
 
   res.status(200).json({
@@ -76,14 +76,26 @@ export const getRecipeById = asyncHandler(async (req, res) => {
 export const createRecipe = asyncHandler(async (req, res) => {
   // Check if image was uploaded
   if (!req.file) {
-    throw new ApiError(400, 'Please upload a recipe image');
+    throw new ApiError(400, "Please upload a recipe image");
   }
 
-  const { title, description, ingredients, steps, prepTime, cookTime, servings, difficulty, category, dietType } = req.body;
+  const {
+    title,
+    description,
+    ingredients,
+    steps,
+    prepTime,
+    cookTime,
+    servings,
+    difficulty,
+    category,
+    dietType,
+  } = req.body;
 
   // Parse JSON strings if needed (from form-data)
-  const parsedIngredients = typeof ingredients === 'string' ? JSON.parse(ingredients) : ingredients;
-  const parsedSteps = typeof steps === 'string' ? JSON.parse(steps) : steps;
+  const parsedIngredients =
+    typeof ingredients === "string" ? JSON.parse(ingredients) : ingredients;
+  const parsedSteps = typeof steps === "string" ? JSON.parse(steps) : steps;
 
   const recipe = await Recipe.create({
     title,
@@ -97,17 +109,17 @@ export const createRecipe = asyncHandler(async (req, res) => {
     prepTime: prepTime || 0,
     cookTime: cookTime || 0,
     servings: servings || 1,
-    difficulty: difficulty || 'Medium',
-    category: category || 'Lunch',
-    dietType: dietType || 'Balanced',
+    difficulty: difficulty || "Medium",
+    category: category || "Lunch",
+    dietType: dietType || "Balanced",
     author: req.user._id,
   });
 
-  await recipe.populate('author', 'name');
+  await recipe.populate("author", "name");
 
   res.status(201).json({
     success: true,
-    message: 'Recipe created successfully',
+    message: "Recipe created successfully",
     data: { recipe },
   });
 });
@@ -121,7 +133,7 @@ export const toggleLike = asyncHandler(async (req, res) => {
   const recipe = await Recipe.findById(req.params.id);
 
   if (!recipe) {
-    throw new ApiError(404, 'Recipe not found');
+    throw new ApiError(404, "Recipe not found");
   }
 
   const userId = req.user._id;
@@ -129,7 +141,9 @@ export const toggleLike = asyncHandler(async (req, res) => {
 
   if (isLiked) {
     // Unlike
-    recipe.likes = recipe.likes.filter((id) => id.toString() !== userId.toString());
+    recipe.likes = recipe.likes.filter(
+      (id) => id.toString() !== userId.toString()
+    );
   } else {
     // Like
     recipe.likes.push(userId);
@@ -139,7 +153,7 @@ export const toggleLike = asyncHandler(async (req, res) => {
 
   res.status(200).json({
     success: true,
-    message: isLiked ? 'Recipe unliked' : 'Recipe liked',
+    message: isLiked ? "Recipe unliked" : "Recipe liked",
     data: { likeCount: recipe.likes.length, isLiked: !isLiked },
   });
 });
@@ -153,13 +167,13 @@ export const addComment = asyncHandler(async (req, res) => {
   const { text } = req.body;
 
   if (!text) {
-    throw new ApiError(400, 'Comment text is required');
+    throw new ApiError(400, "Comment text is required");
   }
 
   const recipe = await Recipe.findById(req.params.id);
 
   if (!recipe) {
-    throw new ApiError(404, 'Recipe not found');
+    throw new ApiError(404, "Recipe not found");
   }
 
   recipe.comments.push({
@@ -168,11 +182,11 @@ export const addComment = asyncHandler(async (req, res) => {
   });
 
   await recipe.save();
-  await recipe.populate('comments.user', 'name');
+  await recipe.populate("comments.user", "name");
 
   res.status(201).json({
     success: true,
-    message: 'Comment added',
+    message: "Comment added",
     data: { comments: recipe.comments },
   });
 });
@@ -186,12 +200,12 @@ export const deleteRecipe = asyncHandler(async (req, res) => {
   const recipe = await Recipe.findById(req.params.id);
 
   if (!recipe) {
-    throw new ApiError(404, 'Recipe not found');
+    throw new ApiError(404, "Recipe not found");
   }
 
   // Check if user is the author
   if (recipe.author.toString() !== req.user._id.toString()) {
-    throw new ApiError(403, 'Not authorized to delete this recipe');
+    throw new ApiError(403, "Not authorized to delete this recipe");
   }
 
   // Delete image from Cloudinary
@@ -203,6 +217,6 @@ export const deleteRecipe = asyncHandler(async (req, res) => {
 
   res.status(200).json({
     success: true,
-    message: 'Recipe deleted successfully',
+    message: "Recipe deleted successfully",
   });
 });

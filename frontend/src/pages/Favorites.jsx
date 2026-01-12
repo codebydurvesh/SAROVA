@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { Heart, Clock, ChefHat } from 'lucide-react';
-import { useAuth } from '../context/AuthContext';
-import recipeService from '../services/recipeService';
-import LoadingSpinner from '../components/LoadingSpinner';
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import { Heart, Clock, ChefHat } from "lucide-react";
+import { useAuth } from "../context/AuthContext";
+import recipeService from "../services/recipeService";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 /**
  * Favorites page component
@@ -34,7 +34,7 @@ const Favorites = () => {
       );
       setRecipes(favoriteRecipes);
     } catch (err) {
-      console.error('Failed to fetch favorites:', err);
+      console.error("Failed to fetch favorites:", err);
     } finally {
       setLoading(false);
     }
@@ -47,24 +47,30 @@ const Favorites = () => {
   // Sample favorites for display
   const sampleFavorites = [
     {
-      _id: '1',
-      title: 'Mediterranean Quinoa Bowl',
-      description: 'A healthy and colorful bowl featuring fluffy quinoa, fresh vegetables, and creamy hummus.',
-      image: { url: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500' },
-      category: 'Lunch',
+      _id: "1",
+      title: "Mediterranean Quinoa Bowl",
+      description:
+        "A healthy and colorful bowl featuring fluffy quinoa, fresh vegetables, and creamy hummus.",
+      image: {
+        url: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500",
+      },
+      category: "Lunch",
       prepTime: 15,
       cookTime: 20,
-      difficulty: 'Easy',
+      difficulty: "Easy",
     },
     {
-      _id: '2',
-      title: 'Classic Avocado Toast',
-      description: 'Perfectly toasted sourdough with creamy avocado, cherry tomatoes, and microgreens.',
-      image: { url: 'https://images.unsplash.com/photo-1541519227354-08fa5d50c44d?w=500' },
-      category: 'Breakfast',
+      _id: "2",
+      title: "Classic Avocado Toast",
+      description:
+        "Perfectly toasted sourdough with creamy avocado, cherry tomatoes, and microgreens.",
+      image: {
+        url: "https://images.unsplash.com/photo-1541519227354-08fa5d50c44d?w=500",
+      },
+      category: "Breakfast",
       prepTime: 5,
       cookTime: 5,
-      difficulty: 'Easy',
+      difficulty: "Easy",
     },
   ];
 

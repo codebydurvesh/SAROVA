@@ -1,10 +1,17 @@
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { Heart, MessageCircle, Share2, Search, Filter, ChefHat } from 'lucide-react';
-import recipeService from '../services/recipeService';
-import { useAuth } from '../context/AuthContext';
-import LoadingSpinner from '../components/LoadingSpinner';
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import {
+  Heart,
+  MessageCircle,
+  Share2,
+  Search,
+  Filter,
+  ChefHat,
+} from "lucide-react";
+import recipeService from "../services/recipeService";
+import { useAuth } from "../context/AuthContext";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 /**
  * Recipe card component
@@ -31,13 +38,13 @@ const RecipeCard = ({ recipe, onLike }) => {
                 {recipe.prepTime + recipe.cookTime} min
               </span>
             </div>
-            
+
             <Link to={`/recipes/${recipe._id}`}>
               <h3 className="text-xl font-serif font-semibold text-savora-brown-800 mb-2 hover:text-savora-green-600 transition-colors">
                 {recipe.title}
               </h3>
             </Link>
-            
+
             <p className="text-savora-brown-500 text-sm leading-relaxed line-clamp-2">
               {recipe.description}
             </p>
@@ -49,15 +56,15 @@ const RecipeCard = ({ recipe, onLike }) => {
               onClick={() => onLike(recipe._id)}
               className={`flex items-center gap-1.5 text-sm transition-colors ${
                 isLiked
-                  ? 'text-red-500'
-                  : 'text-savora-brown-400 hover:text-red-500'
+                  ? "text-red-500"
+                  : "text-savora-brown-400 hover:text-red-500"
               }`}
               disabled={!isAuthenticated}
             >
-              <Heart className={`w-4 h-4 ${isLiked ? 'fill-current' : ''}`} />
+              <Heart className={`w-4 h-4 ${isLiked ? "fill-current" : ""}`} />
               <span>{recipe.likes?.length || 0}</span>
             </button>
-            
+
             <Link
               to={`/recipes/${recipe._id}`}
               className="flex items-center gap-1.5 text-sm text-savora-brown-400 hover:text-savora-green-600 transition-colors"
@@ -65,7 +72,7 @@ const RecipeCard = ({ recipe, onLike }) => {
               <MessageCircle className="w-4 h-4" />
               <span>{recipe.comments?.length || 0}</span>
             </Link>
-            
+
             <button className="flex items-center gap-1.5 text-sm text-savora-brown-400 hover:text-savora-green-600 transition-colors">
               <Share2 className="w-4 h-4" />
             </button>
@@ -73,9 +80,12 @@ const RecipeCard = ({ recipe, onLike }) => {
         </div>
 
         {/* Image - Right side */}
-        <Link to={`/recipes/${recipe._id}`} className="sm:w-60 sm:h-48 flex-shrink-0">
+        <Link
+          to={`/recipes/${recipe._id}`}
+          className="sm:w-60 sm:h-48 flex-shrink-0"
+        >
           <img
-            src={recipe.image?.url || '/placeholder-recipe.jpg'}
+            src={recipe.image?.url || "/placeholder-recipe.jpg"}
             alt={recipe.title}
             className="w-full h-48 sm:h-full object-cover rounded-xl"
           />
@@ -93,12 +103,19 @@ const Recipes = () => {
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [search, setSearch] = useState('');
-  const [category, setCategory] = useState('');
-  const [dietType, setDietType] = useState('');
+  const [search, setSearch] = useState("");
+  const [category, setCategory] = useState("");
+  const [dietType, setDietType] = useState("");
 
-  const categories = ['Breakfast', 'Lunch', 'Dinner', 'Snack', 'Dessert', 'Beverage'];
-  const dietTypes = ['Balanced', 'Keto', 'Vegan', 'Intermittent', 'Fasting'];
+  const categories = [
+    "Breakfast",
+    "Lunch",
+    "Dinner",
+    "Snack",
+    "Dessert",
+    "Beverage",
+  ];
+  const dietTypes = ["Balanced", "Keto", "Vegan", "Intermittent", "Fasting"];
 
   useEffect(() => {
     fetchRecipes();
@@ -115,7 +132,7 @@ const Recipes = () => {
       const response = await recipeService.getRecipes(params);
       setRecipes(response.data.recipes);
     } catch (err) {
-      setError('Failed to load recipes');
+      setError("Failed to load recipes");
       console.error(err);
     } finally {
       setLoading(false);
@@ -132,51 +149,63 @@ const Recipes = () => {
       await recipeService.toggleLike(recipeId);
       fetchRecipes(); // Refresh to get updated like count
     } catch (err) {
-      console.error('Failed to like recipe:', err);
+      console.error("Failed to like recipe:", err);
     }
   };
 
   // Sample recipes for display when no backend data
   const sampleRecipes = [
     {
-      _id: '1',
-      title: 'Mediterranean Quinoa Bowl',
-      description: 'A healthy and colorful bowl featuring fluffy quinoa, fresh vegetables, creamy hummus, and a tangy lemon dressing.',
-      image: { url: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500' },
-      category: 'Lunch',
+      _id: "1",
+      title: "Mediterranean Quinoa Bowl",
+      description:
+        "A healthy and colorful bowl featuring fluffy quinoa, fresh vegetables, creamy hummus, and a tangy lemon dressing.",
+      image: {
+        url: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500",
+      },
+      category: "Lunch",
       prepTime: 15,
       cookTime: 20,
       likes: [],
       comments: [],
     },
     {
-      _id: '2',
-      title: 'Classic Avocado Toast',
-      description: 'Perfectly toasted sourdough bread topped with creamy avocado, cherry tomatoes, microgreens, and a drizzle of olive oil.',
-      image: { url: 'https://images.unsplash.com/photo-1541519227354-08fa5d50c44d?w=500' },
-      category: 'Breakfast',
+      _id: "2",
+      title: "Classic Avocado Toast",
+      description:
+        "Perfectly toasted sourdough bread topped with creamy avocado, cherry tomatoes, microgreens, and a drizzle of olive oil.",
+      image: {
+        url: "https://images.unsplash.com/photo-1541519227354-08fa5d50c44d?w=500",
+      },
+      category: "Breakfast",
       prepTime: 5,
       cookTime: 5,
       likes: [],
       comments: [],
     },
     {
-      _id: '3',
-      title: 'Thai Green Curry',
-      description: 'Aromatic and spicy Thai green curry with tender chicken, bamboo shoots, and Thai basil in rich coconut milk.',
-      image: { url: 'https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=500' },
-      category: 'Dinner',
+      _id: "3",
+      title: "Thai Green Curry",
+      description:
+        "Aromatic and spicy Thai green curry with tender chicken, bamboo shoots, and Thai basil in rich coconut milk.",
+      image: {
+        url: "https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=500",
+      },
+      category: "Dinner",
       prepTime: 20,
       cookTime: 25,
       likes: [],
       comments: [],
     },
     {
-      _id: '4',
-      title: 'Berry Smoothie Bowl',
-      description: 'A refreshing blend of mixed berries, banana, and almond milk topped with granola, fresh fruits, and chia seeds.',
-      image: { url: 'https://images.unsplash.com/photo-1590301157890-4810ed352733?w=500' },
-      category: 'Breakfast',
+      _id: "4",
+      title: "Berry Smoothie Bowl",
+      description:
+        "A refreshing blend of mixed berries, banana, and almond milk topped with granola, fresh fruits, and chia seeds.",
+      image: {
+        url: "https://images.unsplash.com/photo-1590301157890-4810ed352733?w=500",
+      },
+      category: "Breakfast",
       prepTime: 10,
       cookTime: 0,
       likes: [],
@@ -200,7 +229,10 @@ const Recipes = () => {
 
       {/* Search and Filters */}
       <div className="card mb-8">
-        <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-4">
+        <form
+          onSubmit={handleSearch}
+          className="flex flex-col sm:flex-row gap-4"
+        >
           {/* Search input */}
           <div className="flex-1 relative">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-savora-brown-400" />
@@ -269,11 +301,7 @@ const Recipes = () => {
       ) : (
         <div className="space-y-6">
           {displayRecipes.map((recipe) => (
-            <RecipeCard
-              key={recipe._id}
-              recipe={recipe}
-              onLike={handleLike}
-            />
+            <RecipeCard key={recipe._id} recipe={recipe} onLike={handleLike} />
           ))}
         </div>
       )}

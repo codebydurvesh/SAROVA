@@ -1,4 +1,4 @@
-import api from './api';
+import api from "./api";
 
 /**
  * Ingredient service
@@ -10,7 +10,7 @@ const ingredientService = {
    * @param {Object} params - { category, search }
    */
   getIngredients: async (params = {}) => {
-    const response = await api.get('/ingredients', { params });
+    const response = await api.get("/ingredients", { params });
     return response.data;
   },
 
@@ -27,7 +27,7 @@ const ingredientService = {
    * Seed sample ingredients (for development)
    */
   seedIngredients: async () => {
-    const response = await api.post('/ingredients/seed');
+    const response = await api.post("/ingredients/seed");
     return response.data;
   },
 };

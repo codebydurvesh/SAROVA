@@ -1,5 +1,11 @@
-import { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import authService from '../services/authService';
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+} from "react";
+import authService from "../services/authService";
 
 const AuthContext = createContext(null);
 
@@ -15,14 +21,14 @@ export const AuthProvider = ({ children }) => {
   // Check if user is logged in on mount
   useEffect(() => {
     const checkAuth = async () => {
-      const token = localStorage.getItem('accessToken');
+      const token = localStorage.getItem("accessToken");
       if (token) {
         try {
           const response = await authService.getMe();
           setUser(response.data.user);
         } catch (err) {
           // Token invalid or expired
-          localStorage.removeItem('accessToken');
+          localStorage.removeItem("accessToken");
           setUser(null);
         }
       }
@@ -42,7 +48,7 @@ export const AuthProvider = ({ children }) => {
       setUser(response.data.user);
       return response;
     } catch (err) {
-      const message = err.response?.data?.message || 'Registration failed';
+      const message = err.response?.data?.message || "Registration failed";
       setError(message);
       throw err;
     }
@@ -58,7 +64,7 @@ export const AuthProvider = ({ children }) => {
       setUser(response.data.user);
       return response;
     } catch (err) {
-      const message = err.response?.data?.message || 'Login failed';
+      const message = err.response?.data?.message || "Login failed";
       setError(message);
       throw err;
     }
@@ -72,9 +78,9 @@ export const AuthProvider = ({ children }) => {
       await authService.logout();
     } catch (err) {
       // Even if API fails, clear local state
-      console.error('Logout error:', err);
+      console.error("Logout error:", err);
     } finally {
-      localStorage.removeItem('accessToken');
+      localStorage.removeItem("accessToken");
       setUser(null);
     }
   }, []);
@@ -91,7 +97,8 @@ export const AuthProvider = ({ children }) => {
       }));
       return response;
     } catch (err) {
-      const message = err.response?.data?.message || 'Failed to update favorites';
+      const message =
+        err.response?.data?.message || "Failed to update favorites";
       setError(message);
       throw err;
     }
@@ -102,7 +109,9 @@ export const AuthProvider = ({ children }) => {
    */
   const isFavorite = useCallback(
     (recipeId) => {
-      return user?.favorites?.some((id) => id === recipeId || id._id === recipeId);
+      return user?.favorites?.some(
+        (id) => id === recipeId || id._id === recipeId
+      );
     },
     [user]
   );
@@ -136,7 +145,7 @@ export const AuthProvider = ({ children }) => {
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };

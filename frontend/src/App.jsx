@@ -1,25 +1,25 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext';
-import { CartProvider } from './context/CartContext';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "./context/AuthContext";
+import { CartProvider } from "./context/CartContext";
 
 // Layouts
-import MainLayout from './layouts/MainLayout';
-import AuthLayout from './layouts/AuthLayout';
+import MainLayout from "./layouts/MainLayout";
+import AuthLayout from "./layouts/AuthLayout";
 
 // Components
-import ProtectedRoute from './components/ProtectedRoute';
+import ProtectedRoute from "./components/ProtectedRoute";
 
 // Pages
-import Home from './pages/Home';
-import Login from './pages/Login';
-import Signup from './pages/Signup';
-import Recipes from './pages/Recipes';
-import RecipeDetail from './pages/RecipeDetail';
-import MealPlanner from './pages/MealPlanner';
-import Shopping from './pages/Shopping';
-import Cart from './pages/Cart';
-import Favorites from './pages/Favorites';
-import Account from './pages/Account';
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import Recipes from "./pages/Recipes";
+import RecipeDetail from "./pages/RecipeDetail";
+import MealPlanner from "./pages/MealPlanner";
+import Shopping from "./pages/Shopping";
+import Cart from "./pages/Cart";
+import Favorites from "./pages/Favorites";
+import Account from "./pages/Account";
 
 /**
  * Main App component
@@ -45,7 +45,7 @@ function App() {
               <Route path="/meal-planner" element={<MealPlanner />} />
               <Route path="/shopping" element={<Shopping />} />
               <Route path="/cart" element={<Cart />} />
-              
+
               {/* Protected routes */}
               <Route
                 path="/favorites"

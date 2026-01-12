@@ -1,12 +1,12 @@
-import User from '../models/User.js';
-import ApiError from '../utils/ApiError.js';
-import asyncHandler from '../utils/asyncHandler.js';
+import User from "../models/User.js";
+import ApiError from "../utils/ApiError.js";
+import asyncHandler from "../utils/asyncHandler.js";
 import {
   generateAccessToken,
   generateRefreshToken,
   verifyRefreshToken,
   cookieOptions,
-} from '../utils/tokenUtils.js';
+} from "../utils/tokenUtils.js";
 
 /**
  * @desc    Register a new user
@@ -19,7 +19,7 @@ export const register = asyncHandler(async (req, res) => {
   // Check if user already exists
   const existingUser = await User.findOne({ email });
   if (existingUser) {
-    throw new ApiError(400, 'User with this email already exists');
+    throw new ApiError(400, "User with this email already exists");
   }
 
   // Create new user
@@ -38,11 +38,11 @@ export const register = asyncHandler(async (req, res) => {
   await user.save();
 
   // Set refresh token in HTTP-only cookie
-  res.cookie('refreshToken', refreshToken, cookieOptions);
+  res.cookie("refreshToken", refreshToken, cookieOptions);
 
   res.status(201).json({
     success: true,
-    message: 'User registered successfully',
+    message: "User registered successfully",
     data: {
       user: {
         _id: user._id,
@@ -65,19 +65,19 @@ export const login = asyncHandler(async (req, res) => {
 
   // Validate input
   if (!email || !password) {
-    throw new ApiError(400, 'Please provide email and password');
+    throw new ApiError(400, "Please provide email and password");
   }
 
   // Find user and include password for comparison
-  const user = await User.findOne({ email }).select('+password');
+  const user = await User.findOne({ email }).select("+password");
   if (!user) {
-    throw new ApiError(401, 'Invalid email or password');
+    throw new ApiError(401, "Invalid email or password");
   }
 
   // Check password
   const isMatch = await user.comparePassword(password);
   if (!isMatch) {
-    throw new ApiError(401, 'Invalid email or password');
+    throw new ApiError(401, "Invalid email or password");
   }
 
   // Generate tokens
@@ -89,11 +89,11 @@ export const login = asyncHandler(async (req, res) => {
   await user.save();
 
   // Set refresh token in HTTP-only cookie
-  res.cookie('refreshToken', refreshToken, cookieOptions);
+  res.cookie("refreshToken", refreshToken, cookieOptions);
 
   res.status(200).json({
     success: true,
-    message: 'Login successful',
+    message: "Login successful",
     data: {
       user: {
         _id: user._id,
@@ -124,15 +124,15 @@ export const logout = asyncHandler(async (req, res) => {
   }
 
   // Clear the cookie
-  res.clearCookie('refreshToken', {
+  res.clearCookie("refreshToken", {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict',
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
   });
 
   res.status(200).json({
     success: true,
-    message: 'Logged out successfully',
+    message: "Logged out successfully",
   });
 });
 
@@ -142,7 +142,7 @@ export const logout = asyncHandler(async (req, res) => {
  * @access  Private
  */
 export const getMe = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user._id).populate('favorites');
+  const user = await User.findById(req.user._id).populate("favorites");
 
   res.status(200).json({
     success: true,
@@ -167,7 +167,7 @@ export const refreshAccessToken = asyncHandler(async (req, res) => {
   const refreshToken = req.cookies.refreshToken;
 
   if (!refreshToken) {
-    throw new ApiError(401, 'No refresh token provided');
+    throw new ApiError(401, "No refresh token provided");
   }
 
   try {
@@ -175,10 +175,10 @@ export const refreshAccessToken = asyncHandler(async (req, res) => {
     const decoded = verifyRefreshToken(refreshToken);
 
     // Find user with this refresh token
-    const user = await User.findById(decoded.userId).select('+refreshToken');
-    
+    const user = await User.findById(decoded.userId).select("+refreshToken");
+
     if (!user || user.refreshToken !== refreshToken) {
-      throw new ApiError(401, 'Invalid refresh token');
+      throw new ApiError(401, "Invalid refresh token");
     }
 
     // Generate new access token
@@ -189,7 +189,7 @@ export const refreshAccessToken = asyncHandler(async (req, res) => {
       data: { accessToken },
     });
   } catch (error) {
-    throw new ApiError(401, 'Invalid or expired refresh token');
+    throw new ApiError(401, "Invalid or expired refresh token");
   }
 });
 
@@ -206,9 +206,7 @@ export const toggleFavorite = asyncHandler(async (req, res) => {
 
   if (isFavorite) {
     // Remove from favorites
-    user.favorites = user.favorites.filter(
-      (id) => id.toString() !== recipeId
-    );
+    user.favorites = user.favorites.filter((id) => id.toString() !== recipeId);
   } else {
     // Add to favorites
     user.favorites.push(recipeId);
@@ -218,7 +216,7 @@ export const toggleFavorite = asyncHandler(async (req, res) => {
 
   res.status(200).json({
     success: true,
-    message: isFavorite ? 'Removed from favorites' : 'Added to favorites',
+    message: isFavorite ? "Removed from favorites" : "Added to favorites",
     data: { favorites: user.favorites },
   });
 });

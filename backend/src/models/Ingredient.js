@@ -1,17 +1,17 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const ingredientSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: [true, 'Ingredient name is required'],
+      required: [true, "Ingredient name is required"],
       trim: true,
       unique: true,
     },
     image: {
       url: {
         type: String,
-        required: [true, 'Ingredient image is required'],
+        required: [true, "Ingredient image is required"],
       },
       publicId: {
         type: String,
@@ -19,16 +19,25 @@ const ingredientSchema = new mongoose.Schema(
     },
     category: {
       type: String,
-      enum: ['Vegetables', 'Fruits', 'Dairy', 'Meat', 'Seafood', 'Grains', 'Spices', 'Other'],
-      default: 'Other',
+      enum: [
+        "Vegetables",
+        "Fruits",
+        "Dairy",
+        "Meat",
+        "Seafood",
+        "Grains",
+        "Spices",
+        "Other",
+      ],
+      default: "Other",
     },
     unit: {
       type: String,
-      default: 'grams',
+      default: "grams",
     },
     pricePerUnit: {
       type: Number,
-      required: [true, 'Price is required'],
+      required: [true, "Price is required"],
       min: 0,
     },
     stock: {
@@ -46,6 +55,6 @@ const ingredientSchema = new mongoose.Schema(
   }
 );
 
-const Ingredient = mongoose.model('Ingredient', ingredientSchema);
+const Ingredient = mongoose.model("Ingredient", ingredientSchema);
 
 export default Ingredient;

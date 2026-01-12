@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { useState, useEffect } from "react";
+import { useParams, Link, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import {
   ArrowLeft,
   Clock,
@@ -10,10 +10,10 @@ import {
   MessageCircle,
   Share2,
   BookmarkPlus,
-} from 'lucide-react';
-import recipeService from '../services/recipeService';
-import { useAuth } from '../context/AuthContext';
-import LoadingSpinner from '../components/LoadingSpinner';
+} from "lucide-react";
+import recipeService from "../services/recipeService";
+import { useAuth } from "../context/AuthContext";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 /**
  * Recipe detail page
@@ -23,11 +23,11 @@ const RecipeDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { isAuthenticated, toggleFavorite, isFavorite } = useAuth();
-  
+
   const [recipe, setRecipe] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [comment, setComment] = useState('');
+  const [comment, setComment] = useState("");
   const [isLiked, setIsLiked] = useState(false);
 
   useEffect(() => {
@@ -40,7 +40,7 @@ const RecipeDetail = () => {
       const response = await recipeService.getRecipeById(id);
       setRecipe(response.data.recipe);
     } catch (err) {
-      setError('Recipe not found');
+      setError("Recipe not found");
       console.error(err);
     } finally {
       setLoading(false);
@@ -49,7 +49,7 @@ const RecipeDetail = () => {
 
   const handleLike = async () => {
     if (!isAuthenticated) {
-      navigate('/login');
+      navigate("/login");
       return;
     }
     try {
@@ -57,28 +57,28 @@ const RecipeDetail = () => {
       setIsLiked(response.data.isLiked);
       fetchRecipe();
     } catch (err) {
-      console.error('Failed to like recipe:', err);
+      console.error("Failed to like recipe:", err);
     }
   };
 
   const handleComment = async (e) => {
     e.preventDefault();
     if (!isAuthenticated) {
-      navigate('/login');
+      navigate("/login");
       return;
     }
     try {
       await recipeService.addComment(id, comment);
-      setComment('');
+      setComment("");
       fetchRecipe();
     } catch (err) {
-      console.error('Failed to add comment:', err);
+      console.error("Failed to add comment:", err);
     }
   };
 
   const handleFavorite = async () => {
     if (!isAuthenticated) {
-      navigate('/login');
+      navigate("/login");
       return;
     }
     await toggleFavorite(id);
@@ -87,40 +87,72 @@ const RecipeDetail = () => {
   // Sample recipe for display
   const sampleRecipe = {
     _id: id,
-    title: 'Mediterranean Quinoa Bowl',
-    description: 'A healthy and colorful bowl featuring fluffy quinoa, fresh vegetables, creamy hummus, and a tangy lemon dressing. Perfect for a nutritious lunch or light dinner.',
-    image: { url: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=800' },
-    category: 'Lunch',
-    dietType: 'Balanced',
+    title: "Mediterranean Quinoa Bowl",
+    description:
+      "A healthy and colorful bowl featuring fluffy quinoa, fresh vegetables, creamy hummus, and a tangy lemon dressing. Perfect for a nutritious lunch or light dinner.",
+    image: {
+      url: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=800",
+    },
+    category: "Lunch",
+    dietType: "Balanced",
     prepTime: 15,
     cookTime: 20,
     servings: 2,
-    difficulty: 'Easy',
+    difficulty: "Easy",
     likes: [],
     comments: [],
     ingredients: [
-      { name: 'Quinoa', quantity: '1 cup' },
-      { name: 'Cherry tomatoes', quantity: '1 cup, halved' },
-      { name: 'Cucumber', quantity: '1 medium, diced' },
-      { name: 'Red onion', quantity: '1/4, thinly sliced' },
-      { name: 'Kalamata olives', quantity: '1/3 cup' },
-      { name: 'Feta cheese', quantity: '1/2 cup, crumbled' },
-      { name: 'Hummus', quantity: '1/2 cup' },
-      { name: 'Olive oil', quantity: '2 tbsp' },
-      { name: 'Lemon juice', quantity: '2 tbsp' },
-      { name: 'Fresh herbs', quantity: 'to taste' },
+      { name: "Quinoa", quantity: "1 cup" },
+      { name: "Cherry tomatoes", quantity: "1 cup, halved" },
+      { name: "Cucumber", quantity: "1 medium, diced" },
+      { name: "Red onion", quantity: "1/4, thinly sliced" },
+      { name: "Kalamata olives", quantity: "1/3 cup" },
+      { name: "Feta cheese", quantity: "1/2 cup, crumbled" },
+      { name: "Hummus", quantity: "1/2 cup" },
+      { name: "Olive oil", quantity: "2 tbsp" },
+      { name: "Lemon juice", quantity: "2 tbsp" },
+      { name: "Fresh herbs", quantity: "to taste" },
     ],
     steps: [
-      { stepNumber: 1, instruction: 'Rinse quinoa under cold water and cook according to package instructions. Let it cool slightly.' },
-      { stepNumber: 2, instruction: 'While quinoa cooks, prepare all vegetables - halve cherry tomatoes, dice cucumber, and thinly slice red onion.' },
-      { stepNumber: 3, instruction: 'In a small bowl, whisk together olive oil, lemon juice, salt, and pepper to make the dressing.' },
-      { stepNumber: 4, instruction: 'Divide cooked quinoa between two bowls as the base.' },
-      { stepNumber: 5, instruction: 'Arrange cherry tomatoes, cucumber, red onion, and olives on top of the quinoa in sections.' },
-      { stepNumber: 6, instruction: 'Add a generous dollop of hummus to each bowl.' },
-      { stepNumber: 7, instruction: 'Sprinkle crumbled feta cheese over the top.' },
-      { stepNumber: 8, instruction: 'Drizzle with the lemon dressing and garnish with fresh herbs. Serve immediately.' },
+      {
+        stepNumber: 1,
+        instruction:
+          "Rinse quinoa under cold water and cook according to package instructions. Let it cool slightly.",
+      },
+      {
+        stepNumber: 2,
+        instruction:
+          "While quinoa cooks, prepare all vegetables - halve cherry tomatoes, dice cucumber, and thinly slice red onion.",
+      },
+      {
+        stepNumber: 3,
+        instruction:
+          "In a small bowl, whisk together olive oil, lemon juice, salt, and pepper to make the dressing.",
+      },
+      {
+        stepNumber: 4,
+        instruction: "Divide cooked quinoa between two bowls as the base.",
+      },
+      {
+        stepNumber: 5,
+        instruction:
+          "Arrange cherry tomatoes, cucumber, red onion, and olives on top of the quinoa in sections.",
+      },
+      {
+        stepNumber: 6,
+        instruction: "Add a generous dollop of hummus to each bowl.",
+      },
+      {
+        stepNumber: 7,
+        instruction: "Sprinkle crumbled feta cheese over the top.",
+      },
+      {
+        stepNumber: 8,
+        instruction:
+          "Drizzle with the lemon dressing and garnish with fresh herbs. Serve immediately.",
+      },
     ],
-    author: { name: 'SAVORA Kitchen' },
+    author: { name: "SAVORA Kitchen" },
   };
 
   const displayRecipe = recipe || sampleRecipe;
@@ -172,7 +204,7 @@ const RecipeDetail = () => {
             className="w-full h-64 sm:h-96 object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-          
+
           {/* Category badge */}
           <div className="absolute top-4 left-4">
             <span className="px-4 py-2 bg-white/90 backdrop-blur-sm text-savora-green-600 text-sm font-medium rounded-full">
@@ -186,7 +218,7 @@ const RecipeDetail = () => {
           <h1 className="text-3xl sm:text-4xl font-serif font-bold text-savora-brown-800 mb-4">
             {displayRecipe.title}
           </h1>
-          
+
           <p className="text-savora-brown-500 text-lg leading-relaxed mb-6">
             {displayRecipe.description}
           </p>
@@ -213,26 +245,26 @@ const RecipeDetail = () => {
               onClick={handleLike}
               className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-colors ${
                 isLiked
-                  ? 'bg-red-50 text-red-500'
-                  : 'bg-savora-beige-100 text-savora-brown-500 hover:bg-savora-beige-200'
+                  ? "bg-red-50 text-red-500"
+                  : "bg-savora-beige-100 text-savora-brown-500 hover:bg-savora-beige-200"
               }`}
             >
-              <Heart className={`w-5 h-5 ${isLiked ? 'fill-current' : ''}`} />
+              <Heart className={`w-5 h-5 ${isLiked ? "fill-current" : ""}`} />
               <span>{displayRecipe.likes?.length || 0}</span>
             </button>
-            
+
             <button
               onClick={handleFavorite}
               className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-colors ${
                 isFavorite(id)
-                  ? 'bg-savora-green-50 text-savora-green-600'
-                  : 'bg-savora-beige-100 text-savora-brown-500 hover:bg-savora-beige-200'
+                  ? "bg-savora-green-50 text-savora-green-600"
+                  : "bg-savora-beige-100 text-savora-brown-500 hover:bg-savora-beige-200"
               }`}
             >
               <BookmarkPlus className="w-5 h-5" />
               <span>Save</span>
             </button>
-            
+
             <button className="flex items-center gap-2 px-4 py-2 rounded-xl bg-savora-beige-100 text-savora-brown-500 hover:bg-savora-beige-200 transition-colors">
               <Share2 className="w-5 h-5" />
               <span>Share</span>
@@ -256,7 +288,9 @@ const RecipeDetail = () => {
                   >
                     <span className="w-2 h-2 bg-savora-green-500 rounded-full mt-2 flex-shrink-0" />
                     <span>
-                      <strong className="font-medium">{ingredient.quantity}</strong>{' '}
+                      <strong className="font-medium">
+                        {ingredient.quantity}
+                      </strong>{" "}
                       {ingredient.name}
                     </span>
                   </li>
@@ -296,7 +330,9 @@ const RecipeDetail = () => {
             <textarea
               value={comment}
               onChange={(e) => setComment(e.target.value)}
-              placeholder={isAuthenticated ? 'Share your thoughts...' : 'Login to comment'}
+              placeholder={
+                isAuthenticated ? "Share your thoughts..." : "Login to comment"
+              }
               className="input min-h-24 mb-4"
               disabled={!isAuthenticated}
             />
@@ -317,12 +353,12 @@ const RecipeDetail = () => {
                   <div className="flex items-center gap-3 mb-2">
                     <div className="w-10 h-10 bg-savora-green-100 rounded-full flex items-center justify-center">
                       <span className="text-savora-green-600 font-semibold">
-                        {c.user?.name?.charAt(0) || 'U'}
+                        {c.user?.name?.charAt(0) || "U"}
                       </span>
                     </div>
                     <div>
                       <p className="font-medium text-savora-brown-800">
-                        {c.user?.name || 'Anonymous'}
+                        {c.user?.name || "Anonymous"}
                       </p>
                       <p className="text-xs text-savora-brown-400">
                         {new Date(c.createdAt).toLocaleDateString()}

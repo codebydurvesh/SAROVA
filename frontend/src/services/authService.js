@@ -1,4 +1,4 @@
-import api from './api';
+import api from "./api";
 
 /**
  * Authentication service
@@ -10,9 +10,9 @@ const authService = {
    * @param {Object} userData - { name, email, password }
    */
   register: async (userData) => {
-    const response = await api.post('/auth/register', userData);
+    const response = await api.post("/auth/register", userData);
     if (response.data.data.accessToken) {
-      localStorage.setItem('accessToken', response.data.data.accessToken);
+      localStorage.setItem("accessToken", response.data.data.accessToken);
     }
     return response.data;
   },
@@ -22,9 +22,9 @@ const authService = {
    * @param {Object} credentials - { email, password }
    */
   login: async (credentials) => {
-    const response = await api.post('/auth/login', credentials);
+    const response = await api.post("/auth/login", credentials);
     if (response.data.data.accessToken) {
-      localStorage.setItem('accessToken', response.data.data.accessToken);
+      localStorage.setItem("accessToken", response.data.data.accessToken);
     }
     return response.data;
   },
@@ -33,8 +33,8 @@ const authService = {
    * Logout user
    */
   logout: async () => {
-    const response = await api.post('/auth/logout');
-    localStorage.removeItem('accessToken');
+    const response = await api.post("/auth/logout");
+    localStorage.removeItem("accessToken");
     return response.data;
   },
 
@@ -42,7 +42,7 @@ const authService = {
    * Get current user profile
    */
   getMe: async () => {
-    const response = await api.get('/auth/me');
+    const response = await api.get("/auth/me");
     return response.data;
   },
 

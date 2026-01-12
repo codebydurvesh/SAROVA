@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Plus,
   Minus,
@@ -9,8 +9,8 @@ import {
   ArrowLeft,
   CheckCircle,
   Package,
-} from 'lucide-react';
-import { useCart } from '../context/CartContext';
+} from "lucide-react";
+import { useCart } from "../context/CartContext";
 
 /**
  * Cart page component
@@ -61,7 +61,10 @@ const Cart = () => {
             <p className="text-savora-brown-500 mb-8">
               Looks like you haven't added any ingredients yet
             </p>
-            <Link to="/shopping" className="btn-primary inline-flex items-center gap-2">
+            <Link
+              to="/shopping"
+              className="btn-primary inline-flex items-center gap-2"
+            >
               <ShoppingBag className="w-4 h-4" />
               Start Shopping
             </Link>
@@ -86,7 +89,7 @@ const Cart = () => {
           Shopping Cart
         </h1>
         <p className="text-savora-brown-500 mt-1">
-          {itemCount} {itemCount === 1 ? 'item' : 'items'} in your cart
+          {itemCount} {itemCount === 1 ? "item" : "items"} in your cart
         </p>
       </div>
 
@@ -237,14 +240,14 @@ const Cart = () => {
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.8, opacity: 0 }}
-              transition={{ type: 'spring', damping: 20, stiffness: 300 }}
+              transition={{ type: "spring", damping: 20, stiffness: 300 }}
               className="bg-white rounded-2xl p-8 max-w-md w-full text-center shadow-xl"
               onClick={(e) => e.stopPropagation()}
             >
               <motion.div
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
-                transition={{ delay: 0.2, type: 'spring', damping: 10 }}
+                transition={{ delay: 0.2, type: "spring", damping: 10 }}
                 className="w-20 h-20 bg-savora-green-100 rounded-full flex items-center justify-center mx-auto mb-6"
               >
                 <CheckCircle className="w-10 h-10 text-savora-green-600" />
@@ -254,7 +257,8 @@ const Cart = () => {
                 Order Confirmed!
               </h2>
               <p className="text-savora-brown-500 mb-6">
-                Thank you for your order. Your fresh ingredients will be delivered soon.
+                Thank you for your order. Your fresh ingredients will be
+                delivered soon.
               </p>
 
               <div className="flex items-center justify-center gap-3 p-4 bg-savora-beige-50 rounded-xl mb-6">

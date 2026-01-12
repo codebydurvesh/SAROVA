@@ -4,9 +4,9 @@
  * @returns {string} - Formatted currency string
  */
 export const formatCurrency = (amount) => {
-  return new Intl.NumberFormat('en-IN', {
-    style: 'currency',
-    currency: 'INR',
+  return new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
     minimumFractionDigits: 0,
     maximumFractionDigits: 2,
   }).format(amount);
@@ -18,10 +18,10 @@ export const formatCurrency = (amount) => {
  * @returns {string} - Formatted date string
  */
 export const formatDate = (date) => {
-  return new Date(date).toLocaleDateString('en-IN', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
+  return new Date(date).toLocaleDateString("en-IN", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
   });
 };
 
@@ -33,7 +33,7 @@ export const formatDate = (date) => {
  */
 export const truncateText = (text, maxLength = 100) => {
   if (!text || text.length <= maxLength) return text;
-  return text.slice(0, maxLength).trim() + '...';
+  return text.slice(0, maxLength).trim() + "...";
 };
 
 /**
@@ -42,8 +42,8 @@ export const truncateText = (text, maxLength = 100) => {
  * @returns {string} - Initials (max 2 characters)
  */
 export const getInitials = (name) => {
-  if (!name) return 'U';
-  const words = name.trim().split(' ');
+  if (!name) return "U";
+  const words = name.trim().split(" ");
   if (words.length === 1) return words[0].charAt(0).toUpperCase();
   return (words[0].charAt(0) + words[words.length - 1].charAt(0)).toUpperCase();
 };
@@ -68,5 +68,5 @@ export const debounce = (func, wait = 300) => {
  * @returns {string} - Combined class names
  */
 export const cn = (...classes) => {
-  return classes.filter(Boolean).join(' ');
+  return classes.filter(Boolean).join(" ");
 };

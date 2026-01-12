@@ -1,17 +1,17 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const commentSchema = new mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+      ref: "User",
       required: true,
     },
     text: {
       type: String,
-      required: [true, 'Comment text is required'],
+      required: [true, "Comment text is required"],
       trim: true,
-      maxlength: [500, 'Comment cannot exceed 500 characters'],
+      maxlength: [500, "Comment cannot exceed 500 characters"],
     },
   },
   {
@@ -23,20 +23,20 @@ const recipeSchema = new mongoose.Schema(
   {
     title: {
       type: String,
-      required: [true, 'Recipe title is required'],
+      required: [true, "Recipe title is required"],
       trim: true,
-      maxlength: [100, 'Title cannot exceed 100 characters'],
+      maxlength: [100, "Title cannot exceed 100 characters"],
     },
     description: {
       type: String,
-      required: [true, 'Recipe description is required'],
+      required: [true, "Recipe description is required"],
       trim: true,
-      maxlength: [500, 'Description cannot exceed 500 characters'],
+      maxlength: [500, "Description cannot exceed 500 characters"],
     },
     image: {
       url: {
         type: String,
-        required: [true, 'Recipe image is required'],
+        required: [true, "Recipe image is required"],
       },
       publicId: {
         type: String,
@@ -84,29 +84,29 @@ const recipeSchema = new mongoose.Schema(
     },
     difficulty: {
       type: String,
-      enum: ['Easy', 'Medium', 'Hard'],
-      default: 'Medium',
+      enum: ["Easy", "Medium", "Hard"],
+      default: "Medium",
     },
     category: {
       type: String,
-      enum: ['Breakfast', 'Lunch', 'Dinner', 'Snack', 'Dessert', 'Beverage'],
-      default: 'Lunch',
+      enum: ["Breakfast", "Lunch", "Dinner", "Snack", "Dessert", "Beverage"],
+      default: "Lunch",
     },
     dietType: {
       type: String,
-      enum: ['Balanced', 'Keto', 'Vegan', 'Intermittent', 'Fasting'],
-      default: 'Balanced',
+      enum: ["Balanced", "Keto", "Vegan", "Intermittent", "Fasting"],
+      default: "Balanced",
     },
     likes: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        ref: "User",
       },
     ],
     comments: [commentSchema],
     author: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+      ref: "User",
       required: true,
     },
   },
@@ -118,20 +118,20 @@ const recipeSchema = new mongoose.Schema(
 );
 
 // Virtual for total time
-recipeSchema.virtual('totalTime').get(function () {
+recipeSchema.virtual("totalTime").get(function () {
   return this.prepTime + this.cookTime;
 });
 
 // Virtual for like count
-recipeSchema.virtual('likeCount').get(function () {
+recipeSchema.virtual("likeCount").get(function () {
   return this.likes.length;
 });
 
 // Virtual for comment count
-recipeSchema.virtual('commentCount').get(function () {
+recipeSchema.virtual("commentCount").get(function () {
   return this.comments.length;
 });
 
-const Recipe = mongoose.model('Recipe', recipeSchema);
+const Recipe = mongoose.model("Recipe", recipeSchema);
 
 export default Recipe;

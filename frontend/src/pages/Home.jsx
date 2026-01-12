@@ -1,6 +1,6 @@
-import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
-import { ArrowRight, Utensils, CalendarDays, ShoppingBag } from 'lucide-react';
+import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
+import { ArrowRight, Utensils, CalendarDays, ShoppingBag } from "lucide-react";
 
 /**
  * Home page component
@@ -10,18 +10,18 @@ const Home = () => {
   const features = [
     {
       icon: Utensils,
-      title: 'Discover Recipes',
-      description: 'Explore curated recipes for every taste and occasion',
+      title: "Discover Recipes",
+      description: "Explore curated recipes for every taste and occasion",
     },
     {
       icon: CalendarDays,
-      title: 'Plan Your Meals',
-      description: 'Organize your weekly meals with our smart planner',
+      title: "Plan Your Meals",
+      description: "Organize your weekly meals with our smart planner",
     },
     {
       icon: ShoppingBag,
-      title: 'Shop Ingredients',
-      description: 'Get fresh ingredients delivered to your doorstep',
+      title: "Shop Ingredients",
+      description: "Get fresh ingredients delivered to your doorstep",
     },
   ];
 
@@ -36,7 +36,7 @@ const Home = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: 'easeOut' }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
           >
             {/* Main heading */}
             <h1 className="text-5xl sm:text-6xl md:text-7xl font-serif font-bold text-savora-brown-800 mb-6">
@@ -45,18 +45,24 @@ const Home = () => {
 
             {/* Tagline with dots */}
             <div className="flex items-center justify-center space-x-4 mb-8">
-              <span className="text-lg sm:text-xl text-savora-brown-600 font-medium">cook</span>
+              <span className="text-lg sm:text-xl text-savora-brown-600 font-medium">
+                cook
+              </span>
               <span className="w-1.5 h-1.5 bg-savora-green-500 rounded-full" />
-              <span className="text-lg sm:text-xl text-savora-brown-600 font-medium">plan</span>
+              <span className="text-lg sm:text-xl text-savora-brown-600 font-medium">
+                plan
+              </span>
               <span className="w-1.5 h-1.5 bg-savora-green-500 rounded-full" />
-              <span className="text-lg sm:text-xl text-savora-brown-600 font-medium">eat</span>
+              <span className="text-lg sm:text-xl text-savora-brown-600 font-medium">
+                eat
+              </span>
             </div>
 
             {/* Description */}
             <p className="text-savora-brown-500 text-lg max-w-2xl mx-auto mb-10 leading-relaxed">
-              Your personal recipe manager and meal planner. 
-              Discover delicious recipes, organize your weekly meals, 
-              and shop for fresh ingredients—all in one place.
+              Your personal recipe manager and meal planner. Discover delicious
+              recipes, organize your weekly meals, and shop for fresh
+              ingredients—all in one place.
             </p>
 
             {/* CTA Buttons */}
@@ -96,7 +102,7 @@ const Home = () => {
               Everything you need
             </h2>
             <p className="text-savora-brown-500 max-w-xl mx-auto">
-              From recipe discovery to meal planning and ingredient shopping, 
+              From recipe discovery to meal planning and ingredient shopping,
               we've got you covered.
             </p>
           </motion.div>

@@ -1,17 +1,18 @@
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Plus, Minus, ShoppingBag, Search } from 'lucide-react';
-import ingredientService from '../services/ingredientService';
-import { useCart } from '../context/CartContext';
-import LoadingSpinner from '../components/LoadingSpinner';
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { Plus, Minus, ShoppingBag, Search } from "lucide-react";
+import ingredientService from "../services/ingredientService";
+import { useCart } from "../context/CartContext";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 /**
  * Ingredient card component
  */
 const IngredientCard = ({ ingredient }) => {
-  const { addToCart, getCartItem, incrementQuantity, decrementQuantity } = useCart();
+  const { addToCart, getCartItem, incrementQuantity, decrementQuantity } =
+    useCart();
   const [quantity, setQuantity] = useState(1);
-  
+
   const cartItem = getCartItem(ingredient._id);
   const isInCart = !!cartItem;
 
@@ -25,7 +26,7 @@ const IngredientCard = ({ ingredient }) => {
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       className="card hover:shadow-soft-lg transition-all duration-300 flex flex-col"
-      style={{ aspectRatio: '9/12' }}
+      style={{ aspectRatio: "9/12" }}
     >
       {/* Image */}
       <div className="relative h-40 -mx-6 -mt-6 mb-4">
@@ -47,7 +48,7 @@ const IngredientCard = ({ ingredient }) => {
         <p className="text-sm text-savora-brown-500 mb-2">
           ₹{ingredient.pricePerUnit} per {ingredient.unit}
         </p>
-        
+
         {ingredient.description && (
           <p className="text-xs text-savora-brown-400 mb-4 line-clamp-2 flex-1">
             {ingredient.description}
@@ -122,120 +123,153 @@ const IngredientCard = ({ ingredient }) => {
 const Shopping = () => {
   const [ingredients, setIngredients] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState('');
-  const [category, setCategory] = useState('');
+  const [search, setSearch] = useState("");
+  const [category, setCategory] = useState("");
 
-  const categories = ['Vegetables', 'Fruits', 'Dairy', 'Meat', 'Seafood', 'Grains', 'Spices', 'Other'];
+  const categories = [
+    "Vegetables",
+    "Fruits",
+    "Dairy",
+    "Meat",
+    "Seafood",
+    "Grains",
+    "Spices",
+    "Other",
+  ];
 
   // Sample ingredients for display
   const sampleIngredients = [
     {
-      _id: '1',
-      name: 'Tomatoes',
-      image: { url: 'https://images.unsplash.com/photo-1546470427-227c7369a9b9?w=400' },
-      category: 'Vegetables',
-      unit: 'kg',
+      _id: "1",
+      name: "Tomatoes",
+      image: {
+        url: "https://images.unsplash.com/photo-1546470427-227c7369a9b9?w=400",
+      },
+      category: "Vegetables",
+      unit: "kg",
       pricePerUnit: 40,
-      description: 'Fresh red tomatoes',
+      description: "Fresh red tomatoes",
     },
     {
-      _id: '2',
-      name: 'Onions',
-      image: { url: 'https://images.unsplash.com/photo-1618512496248-a07fe83aa8cb?w=400' },
-      category: 'Vegetables',
-      unit: 'kg',
+      _id: "2",
+      name: "Onions",
+      image: {
+        url: "https://images.unsplash.com/photo-1618512496248-a07fe83aa8cb?w=400",
+      },
+      category: "Vegetables",
+      unit: "kg",
       pricePerUnit: 30,
-      description: 'Fresh onions',
+      description: "Fresh onions",
     },
     {
-      _id: '3',
-      name: 'Chicken Breast',
-      image: { url: 'https://images.unsplash.com/photo-1604503468506-a8da13d82791?w=400' },
-      category: 'Meat',
-      unit: 'kg',
+      _id: "3",
+      name: "Chicken Breast",
+      image: {
+        url: "https://images.unsplash.com/photo-1604503468506-a8da13d82791?w=400",
+      },
+      category: "Meat",
+      unit: "kg",
       pricePerUnit: 280,
-      description: 'Boneless chicken breast',
+      description: "Boneless chicken breast",
     },
     {
-      _id: '4',
-      name: 'Basmati Rice',
-      image: { url: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400' },
-      category: 'Grains',
-      unit: 'kg',
+      _id: "4",
+      name: "Basmati Rice",
+      image: {
+        url: "https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400",
+      },
+      category: "Grains",
+      unit: "kg",
       pricePerUnit: 120,
-      description: 'Premium basmati rice',
+      description: "Premium basmati rice",
     },
     {
-      _id: '5',
-      name: 'Spinach',
-      image: { url: 'https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=400' },
-      category: 'Vegetables',
-      unit: 'bunch',
+      _id: "5",
+      name: "Spinach",
+      image: {
+        url: "https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=400",
+      },
+      category: "Vegetables",
+      unit: "bunch",
       pricePerUnit: 25,
-      description: 'Fresh green spinach',
+      description: "Fresh green spinach",
     },
     {
-      _id: '6',
-      name: 'Eggs',
-      image: { url: 'https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?w=400' },
-      category: 'Dairy',
-      unit: 'dozen',
+      _id: "6",
+      name: "Eggs",
+      image: {
+        url: "https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?w=400",
+      },
+      category: "Dairy",
+      unit: "dozen",
       pricePerUnit: 80,
-      description: 'Farm fresh eggs',
+      description: "Farm fresh eggs",
     },
     {
-      _id: '7',
-      name: 'Garlic',
-      image: { url: 'https://images.unsplash.com/photo-1540148426945-6cf22a6b2f85?w=400' },
-      category: 'Vegetables',
-      unit: '100g',
+      _id: "7",
+      name: "Garlic",
+      image: {
+        url: "https://images.unsplash.com/photo-1540148426945-6cf22a6b2f85?w=400",
+      },
+      category: "Vegetables",
+      unit: "100g",
       pricePerUnit: 45,
-      description: 'Fresh garlic cloves',
+      description: "Fresh garlic cloves",
     },
     {
-      _id: '8',
-      name: 'Olive Oil',
-      image: { url: 'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=400' },
-      category: 'Other',
-      unit: 'liter',
+      _id: "8",
+      name: "Olive Oil",
+      image: {
+        url: "https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=400",
+      },
+      category: "Other",
+      unit: "liter",
       pricePerUnit: 450,
-      description: 'Extra virgin olive oil',
+      description: "Extra virgin olive oil",
     },
     {
-      _id: '9',
-      name: 'Bell Peppers',
-      image: { url: 'https://images.unsplash.com/photo-1563565375-f3fdfdbefa83?w=400' },
-      category: 'Vegetables',
-      unit: 'kg',
+      _id: "9",
+      name: "Bell Peppers",
+      image: {
+        url: "https://images.unsplash.com/photo-1563565375-f3fdfdbefa83?w=400",
+      },
+      category: "Vegetables",
+      unit: "kg",
       pricePerUnit: 80,
-      description: 'Mixed color bell peppers',
+      description: "Mixed color bell peppers",
     },
     {
-      _id: '10',
-      name: 'Milk',
-      image: { url: 'https://images.unsplash.com/photo-1563636619-e9143da7973b?w=400' },
-      category: 'Dairy',
-      unit: 'liter',
+      _id: "10",
+      name: "Milk",
+      image: {
+        url: "https://images.unsplash.com/photo-1563636619-e9143da7973b?w=400",
+      },
+      category: "Dairy",
+      unit: "liter",
       pricePerUnit: 60,
-      description: 'Fresh whole milk',
+      description: "Fresh whole milk",
     },
     {
-      _id: '11',
-      name: 'Salmon',
-      image: { url: 'https://images.unsplash.com/photo-1599084993091-1cb5c0721cc6?w=400' },
-      category: 'Seafood',
-      unit: 'kg',
+      _id: "11",
+      name: "Salmon",
+      image: {
+        url: "https://images.unsplash.com/photo-1599084993091-1cb5c0721cc6?w=400",
+      },
+      category: "Seafood",
+      unit: "kg",
       pricePerUnit: 800,
-      description: 'Fresh Atlantic salmon',
+      description: "Fresh Atlantic salmon",
     },
     {
-      _id: '12',
-      name: 'Avocado',
-      image: { url: 'https://images.unsplash.com/photo-1523049673857-eb18f1d7b578?w=400' },
-      category: 'Fruits',
-      unit: 'piece',
+      _id: "12",
+      name: "Avocado",
+      image: {
+        url: "https://images.unsplash.com/photo-1523049673857-eb18f1d7b578?w=400",
+      },
+      category: "Fruits",
+      unit: "piece",
       pricePerUnit: 120,
-      description: 'Ripe Hass avocado',
+      description: "Ripe Hass avocado",
     },
   ];
 
@@ -253,7 +287,7 @@ const Shopping = () => {
       const response = await ingredientService.getIngredients(params);
       setIngredients(response.data.ingredients);
     } catch (err) {
-      console.error('Failed to fetch ingredients:', err);
+      console.error("Failed to fetch ingredients:", err);
       // Use sample data on error
       setIngredients([]);
     } finally {
@@ -271,7 +305,8 @@ const Shopping = () => {
     ? sampleIngredients.filter((i) => i.category === category)
     : sampleIngredients;
 
-  const displayIngredients = ingredients.length > 0 ? ingredients : filteredSamples;
+  const displayIngredients =
+    ingredients.length > 0 ? ingredients : filteredSamples;
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -287,7 +322,10 @@ const Shopping = () => {
 
       {/* Search and Filters */}
       <div className="card mb-8">
-        <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-4">
+        <form
+          onSubmit={handleSearch}
+          className="flex flex-col sm:flex-row gap-4"
+        >
           <div className="flex-1 relative">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-savora-brown-400" />
             <input
