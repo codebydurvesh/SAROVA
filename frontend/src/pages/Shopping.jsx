@@ -138,9 +138,10 @@ const Shopping = () => {
   ];
 
   // Sample ingredients for display
+  // Note: These are display-only samples when no backend data available
   const sampleIngredients = [
     {
-      _id: "1",
+      _id: "sample_ingredient_001",
       name: "Tomatoes",
       image: {
         url: "https://images.unsplash.com/photo-1546470427-227c7369a9b9?w=400",
@@ -151,7 +152,7 @@ const Shopping = () => {
       description: "Fresh red tomatoes",
     },
     {
-      _id: "2",
+      _id: "sample_ingredient_002",
       name: "Onions",
       image: {
         url: "https://images.unsplash.com/photo-1618512496248-a07fe83aa8cb?w=400",
@@ -162,7 +163,7 @@ const Shopping = () => {
       description: "Fresh onions",
     },
     {
-      _id: "3",
+      _id: "sample_ingredient_003",
       name: "Chicken Breast",
       image: {
         url: "https://images.unsplash.com/photo-1604503468506-a8da13d82791?w=400",
@@ -173,7 +174,7 @@ const Shopping = () => {
       description: "Boneless chicken breast",
     },
     {
-      _id: "4",
+      _id: "sample_ingredient_004",
       name: "Basmati Rice",
       image: {
         url: "https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400",
@@ -184,7 +185,7 @@ const Shopping = () => {
       description: "Premium basmati rice",
     },
     {
-      _id: "5",
+      _id: "sample_ingredient_005",
       name: "Spinach",
       image: {
         url: "https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=400",
@@ -195,7 +196,7 @@ const Shopping = () => {
       description: "Fresh green spinach",
     },
     {
-      _id: "6",
+      _id: "sample_ingredient_006",
       name: "Eggs",
       image: {
         url: "https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?w=400",
@@ -206,7 +207,7 @@ const Shopping = () => {
       description: "Farm fresh eggs",
     },
     {
-      _id: "7",
+      _id: "sample_ingredient_007",
       name: "Garlic",
       image: {
         url: "https://images.unsplash.com/photo-1540148426945-6cf22a6b2f85?w=400",
@@ -217,7 +218,7 @@ const Shopping = () => {
       description: "Fresh garlic cloves",
     },
     {
-      _id: "8",
+      _id: "sample_ingredient_008",
       name: "Olive Oil",
       image: {
         url: "https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=400",
@@ -228,7 +229,7 @@ const Shopping = () => {
       description: "Extra virgin olive oil",
     },
     {
-      _id: "9",
+      _id: "sample_ingredient_009",
       name: "Bell Peppers",
       image: {
         url: "https://images.unsplash.com/photo-1563565375-f3fdfdbefa83?w=400",
@@ -239,7 +240,7 @@ const Shopping = () => {
       description: "Mixed color bell peppers",
     },
     {
-      _id: "10",
+      _id: "sample_ingredient_010",
       name: "Milk",
       image: {
         url: "https://images.unsplash.com/photo-1563636619-e9143da7973b?w=400",
@@ -250,7 +251,7 @@ const Shopping = () => {
       description: "Fresh whole milk",
     },
     {
-      _id: "11",
+      _id: "sample_ingredient_011",
       name: "Salmon",
       image: {
         url: "https://images.unsplash.com/photo-1599084993091-1cb5c0721cc6?w=400",
@@ -261,7 +262,7 @@ const Shopping = () => {
       description: "Fresh Atlantic salmon",
     },
     {
-      _id: "12",
+      _id: "sample_ingredient_012",
       name: "Avocado",
       image: {
         url: "https://images.unsplash.com/photo-1523049673857-eb18f1d7b578?w=400",

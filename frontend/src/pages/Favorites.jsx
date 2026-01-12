@@ -45,9 +45,10 @@ const Favorites = () => {
   };
 
   // Sample favorites for display
+  // Note: These are display-only samples - clicking will show "Recipe not found"
   const sampleFavorites = [
     {
-      _id: "1",
+      _id: "sample_favorite_001",
       title: "Mediterranean Quinoa Bowl",
       description:
         "A healthy and colorful bowl featuring fluffy quinoa, fresh vegetables, and creamy hummus.",
@@ -58,9 +59,10 @@ const Favorites = () => {
       prepTime: 15,
       cookTime: 20,
       difficulty: "Easy",
+      isSample: true,
     },
     {
-      _id: "2",
+      _id: "sample_favorite_002",
       title: "Classic Avocado Toast",
       description:
         "Perfectly toasted sourdough with creamy avocado, cherry tomatoes, and microgreens.",
@@ -71,6 +73,7 @@ const Favorites = () => {
       prepTime: 5,
       cookTime: 5,
       difficulty: "Easy",
+      isSample: true,
     },
   ];
 

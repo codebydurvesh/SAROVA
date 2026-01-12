@@ -154,9 +154,10 @@ const Recipes = () => {
   };
 
   // Sample recipes for display when no backend data
+  // Note: These are display-only samples - clicking will show "Recipe not found"
   const sampleRecipes = [
     {
-      _id: "1",
+      _id: "sample_recipe_001",
       title: "Mediterranean Quinoa Bowl",
       description:
         "A healthy and colorful bowl featuring fluffy quinoa, fresh vegetables, creamy hummus, and a tangy lemon dressing.",
@@ -168,9 +169,10 @@ const Recipes = () => {
       cookTime: 20,
       likes: [],
       comments: [],
+      isSample: true,
     },
     {
-      _id: "2",
+      _id: "sample_recipe_002",
       title: "Classic Avocado Toast",
       description:
         "Perfectly toasted sourdough bread topped with creamy avocado, cherry tomatoes, microgreens, and a drizzle of olive oil.",
@@ -182,9 +184,10 @@ const Recipes = () => {
       cookTime: 5,
       likes: [],
       comments: [],
+      isSample: true,
     },
     {
-      _id: "3",
+      _id: "sample_recipe_003",
       title: "Thai Green Curry",
       description:
         "Aromatic and spicy Thai green curry with tender chicken, bamboo shoots, and Thai basil in rich coconut milk.",
@@ -196,9 +199,10 @@ const Recipes = () => {
       cookTime: 25,
       likes: [],
       comments: [],
+      isSample: true,
     },
     {
-      _id: "4",
+      _id: "sample_recipe_004",
       title: "Berry Smoothie Bowl",
       description:
         "A refreshing blend of mixed berries, banana, and almond milk topped with granola, fresh fruits, and chia seeds.",
@@ -210,6 +214,7 @@ const Recipes = () => {
       cookTime: 0,
       likes: [],
       comments: [],
+      isSample: true,
     },
   ];
 

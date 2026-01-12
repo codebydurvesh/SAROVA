@@ -1,7 +1,13 @@
+import mongoose from "mongoose";
 import Recipe from "../models/Recipe.js";
 import ApiError from "../utils/ApiError.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import { cloudinary } from "../config/cloudinary.js";
+
+/**
+ * Helper function to validate MongoDB ObjectId
+ */
+const isValidObjectId = (id) => mongoose.Types.ObjectId.isValid(id);
 
 /**
  * @desc    Get all recipes
@@ -54,7 +60,14 @@ export const getRecipes = asyncHandler(async (req, res) => {
  * @access  Public
  */
 export const getRecipeById = asyncHandler(async (req, res) => {
-  const recipe = await Recipe.findById(req.params.id)
+  const { id } = req.params;
+
+  // Validate ObjectId format
+  if (!isValidObjectId(id)) {
+    throw new ApiError(400, "Invalid recipe ID format");
+  }
+
+  const recipe = await Recipe.findById(id)
     .populate("author", "name")
     .populate("comments.user", "name");
 
@@ -130,7 +143,14 @@ export const createRecipe = asyncHandler(async (req, res) => {
  * @access  Private
  */
 export const toggleLike = asyncHandler(async (req, res) => {
-  const recipe = await Recipe.findById(req.params.id);
+  const { id } = req.params;
+
+  // Validate ObjectId format
+  if (!isValidObjectId(id)) {
+    throw new ApiError(400, "Invalid recipe ID format");
+  }
+
+  const recipe = await Recipe.findById(id);
 
   if (!recipe) {
     throw new ApiError(404, "Recipe not found");
@@ -164,13 +184,19 @@ export const toggleLike = asyncHandler(async (req, res) => {
  * @access  Private
  */
 export const addComment = asyncHandler(async (req, res) => {
+  const { id } = req.params;
   const { text } = req.body;
+
+  // Validate ObjectId format
+  if (!isValidObjectId(id)) {
+    throw new ApiError(400, "Invalid recipe ID format");
+  }
 
   if (!text) {
     throw new ApiError(400, "Comment text is required");
   }
 
-  const recipe = await Recipe.findById(req.params.id);
+  const recipe = await Recipe.findById(id);
 
   if (!recipe) {
     throw new ApiError(404, "Recipe not found");
@@ -197,7 +223,14 @@ export const addComment = asyncHandler(async (req, res) => {
  * @access  Private
  */
 export const deleteRecipe = asyncHandler(async (req, res) => {
-  const recipe = await Recipe.findById(req.params.id);
+  const { id } = req.params;
+
+  // Validate ObjectId format
+  if (!isValidObjectId(id)) {
+    throw new ApiError(400, "Invalid recipe ID format");
+  }
+
+  const recipe = await Recipe.findById(id);
 
   if (!recipe) {
     throw new ApiError(404, "Recipe not found");
@@ -213,7 +246,7 @@ export const deleteRecipe = asyncHandler(async (req, res) => {
     await cloudinary.uploader.destroy(recipe.image.publicId);
   }
 
-  await Recipe.findByIdAndDelete(req.params.id);
+  await Recipe.findByIdAndDelete(id);
 
   res.status(200).json({
     success: true,
