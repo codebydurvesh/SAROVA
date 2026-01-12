@@ -271,14 +271,14 @@ const Cart = () => {
               <div className="flex flex-col sm:flex-row gap-3">
                 <Link
                   to="/shopping"
-                  className="flex-1 btn-secondary"
+                  className="flex-1 btn-secondary text-center flex items-center justify-center"
                   onClick={closeConfirmation}
                 >
                   Continue Shopping
                 </Link>
                 <Link
                   to="/"
-                  className="flex-1 btn-primary"
+                  className="flex-1 btn-primary flex items-center justify-center"
                   onClick={closeConfirmation}
                 >
                   Go Home
