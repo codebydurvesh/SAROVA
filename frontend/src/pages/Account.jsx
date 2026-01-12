@@ -28,12 +28,19 @@ const Account = () => {
       bgColor: "bg-red-50",
     },
     {
-      icon: ShoppingBag,
-      label: "Orders",
-      value: 0,
-      color: "text-savora-green-600",
-      bgColor: "bg-savora-green-50",
+      icon: Calendar,
+      label: "Meal Plans",
+      value: 1,
+      color: "text-savora-brown-600",
+      bgColor: "bg-savora-brown-50",
     },
+    // {
+    //   icon: ShoppingBag,
+    //   label: "Orders",
+    //   value: 0,
+    //   color: "text-savora-green-600",
+    //   bgColor: "bg-savora-green-50",
+    // },
   ];
 
   return (
