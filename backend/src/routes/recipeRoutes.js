@@ -6,6 +6,7 @@ import {
   toggleLike,
   addComment,
   deleteRecipe,
+  seedRecipes,
 } from "../controllers/recipeController.js";
 import authenticate from "../middlewares/authenticate.js";
 import { upload } from "../config/cloudinary.js";
@@ -14,6 +15,7 @@ const router = express.Router();
 
 // Public routes
 router.get("/", getRecipes);
+router.post("/seed", seedRecipes);
 router.get("/:id", getRecipeById);
 
 // Protected routes

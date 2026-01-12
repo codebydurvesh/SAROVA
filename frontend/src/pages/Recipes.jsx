@@ -1,13 +1,15 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
   Heart,
   MessageCircle,
   Share2,
   Search,
-  Filter,
   ChefHat,
+  Plus,
+  Check,
+  Copy,
 } from "lucide-react";
 import recipeService from "../services/recipeService";
 import { useAuth } from "../context/AuthContext";
@@ -16,9 +18,59 @@ import LoadingSpinner from "../components/LoadingSpinner";
 /**
  * Recipe card component
  */
-const RecipeCard = ({ recipe, onLike }) => {
-  const { isAuthenticated, isFavorite } = useAuth();
-  const isLiked = recipe.likes?.includes(recipe.userId);
+const RecipeCard = ({ recipe, onLike, currentUserId }) => {
+  const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
+  const [copied, setCopied] = useState(false);
+  const [imageError, setImageError] = useState(false);
+
+  // Check if current user has liked this recipe
+  const isLiked = recipe.likes?.some(
+    (like) => like.toString() === currentUserId?.toString()
+  );
+
+  // Fallback image
+  const fallbackImage =
+    "https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=600";
+
+  const handleLike = () => {
+    if (!isAuthenticated) {
+      navigate("/login");
+      return;
+    }
+    onLike(recipe._id);
+  };
+
+  const handleShare = async () => {
+    const url = `${window.location.origin}/recipes/${recipe._id}`;
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: recipe.title,
+          text: recipe.description,
+          url: url,
+        });
+      } catch (err) {
+        // User cancelled or error
+        console.log("Share cancelled");
+      }
+    } else {
+      // Fallback: copy to clipboard
+      try {
+        await navigator.clipboard.writeText(url);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      } catch (err) {
+        console.error("Failed to copy:", err);
+      }
+    }
+  };
+
+  // Don't render if recipe is sample data
+  if (recipe.isSample) {
+    return null;
+  }
 
   return (
     <motion.article
@@ -34,8 +86,13 @@ const RecipeCard = ({ recipe, onLike }) => {
               <span className="px-3 py-1 bg-savora-green-50 text-savora-green-600 text-xs font-medium rounded-full">
                 {recipe.category}
               </span>
+              {recipe.dietType && (
+                <span className="px-3 py-1 bg-savora-beige-100 text-savora-brown-600 text-xs font-medium rounded-full">
+                  {recipe.dietType}
+                </span>
+              )}
               <span className="text-xs text-savora-brown-400">
-                {recipe.prepTime + recipe.cookTime} min
+                {(recipe.prepTime || 0) + (recipe.cookTime || 0)} min
               </span>
             </div>
 
@@ -48,18 +105,27 @@ const RecipeCard = ({ recipe, onLike }) => {
             <p className="text-savora-brown-500 text-sm leading-relaxed line-clamp-2">
               {recipe.description}
             </p>
+
+            {/* Author name */}
+            {recipe.author?.name && (
+              <p className="text-xs text-savora-brown-400 mt-2">
+                by{" "}
+                <span className="font-medium text-savora-green-600">
+                  {recipe.author.name}
+                </span>
+              </p>
+            )}
           </div>
 
           {/* Actions */}
           <div className="flex items-center gap-4 mt-4 pt-4 border-t border-savora-beige-200">
             <button
-              onClick={() => onLike(recipe._id)}
+              onClick={handleLike}
               className={`flex items-center gap-1.5 text-sm transition-colors ${
                 isLiked
                   ? "text-red-500"
                   : "text-savora-brown-400 hover:text-red-500"
               }`}
-              disabled={!isAuthenticated}
             >
               <Heart className={`w-4 h-4 ${isLiked ? "fill-current" : ""}`} />
               <span>{recipe.likes?.length || 0}</span>
@@ -73,8 +139,21 @@ const RecipeCard = ({ recipe, onLike }) => {
               <span>{recipe.comments?.length || 0}</span>
             </Link>
 
-            <button className="flex items-center gap-1.5 text-sm text-savora-brown-400 hover:text-savora-green-600 transition-colors">
-              <Share2 className="w-4 h-4" />
+            <button
+              onClick={handleShare}
+              className="flex items-center gap-1.5 text-sm text-savora-brown-400 hover:text-savora-green-600 transition-colors"
+            >
+              {copied ? (
+                <>
+                  <Check className="w-4 h-4 text-green-500" />
+                  <span className="text-green-500">Copied!</span>
+                </>
+              ) : (
+                <>
+                  <Share2 className="w-4 h-4" />
+                  <span>Share</span>
+                </>
+              )}
             </button>
           </div>
         </div>
@@ -85,9 +164,12 @@ const RecipeCard = ({ recipe, onLike }) => {
           className="sm:w-60 sm:h-48 flex-shrink-0"
         >
           <img
-            src={recipe.image?.url || "/placeholder-recipe.jpg"}
+            src={
+              imageError ? fallbackImage : recipe.image?.url || fallbackImage
+            }
             alt={recipe.title}
             className="w-full h-48 sm:h-full object-cover rounded-xl"
+            onError={() => setImageError(true)}
           />
         </Link>
       </div>
@@ -100,6 +182,8 @@ const RecipeCard = ({ recipe, onLike }) => {
  * Displays all recipes with search and filter
  */
 const Recipes = () => {
+  const navigate = useNavigate();
+  const { user, isAuthenticated } = useAuth();
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -124,16 +208,18 @@ const Recipes = () => {
   const fetchRecipes = async () => {
     try {
       setLoading(true);
+      setError(null);
       const params = {};
       if (category) params.category = category;
       if (dietType) params.dietType = dietType;
       if (search) params.search = search;
 
       const response = await recipeService.getRecipes(params);
-      setRecipes(response.data.recipes);
+      setRecipes(response.data.recipes || []);
     } catch (err) {
-      setError("Failed to load recipes");
-      console.error(err);
+      console.error("Failed to load recipes:", err);
+      setError("Failed to load recipes. Please try again.");
+      setRecipes([]);
     } finally {
       setLoading(false);
     }
@@ -145,6 +231,10 @@ const Recipes = () => {
   };
 
   const handleLike = async (recipeId) => {
+    if (!isAuthenticated) {
+      navigate("/login");
+      return;
+    }
     try {
       await recipeService.toggleLike(recipeId);
       fetchRecipes(); // Refresh to get updated like count
@@ -153,83 +243,34 @@ const Recipes = () => {
     }
   };
 
-  // Sample recipes for display when no backend data
-  // Note: These are display-only samples - clicking will show "Recipe not found"
-  const sampleRecipes = [
-    {
-      _id: "sample_recipe_001",
-      title: "Mediterranean Quinoa Bowl",
-      description:
-        "A healthy and colorful bowl featuring fluffy quinoa, fresh vegetables, creamy hummus, and a tangy lemon dressing.",
-      image: {
-        url: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500",
-      },
-      category: "Lunch",
-      prepTime: 15,
-      cookTime: 20,
-      likes: [],
-      comments: [],
-      isSample: true,
-    },
-    {
-      _id: "sample_recipe_002",
-      title: "Classic Avocado Toast",
-      description:
-        "Perfectly toasted sourdough bread topped with creamy avocado, cherry tomatoes, microgreens, and a drizzle of olive oil.",
-      image: {
-        url: "https://images.unsplash.com/photo-1541519227354-08fa5d50c44d?w=500",
-      },
-      category: "Breakfast",
-      prepTime: 5,
-      cookTime: 5,
-      likes: [],
-      comments: [],
-      isSample: true,
-    },
-    {
-      _id: "sample_recipe_003",
-      title: "Thai Green Curry",
-      description:
-        "Aromatic and spicy Thai green curry with tender chicken, bamboo shoots, and Thai basil in rich coconut milk.",
-      image: {
-        url: "https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=500",
-      },
-      category: "Dinner",
-      prepTime: 20,
-      cookTime: 25,
-      likes: [],
-      comments: [],
-      isSample: true,
-    },
-    {
-      _id: "sample_recipe_004",
-      title: "Berry Smoothie Bowl",
-      description:
-        "A refreshing blend of mixed berries, banana, and almond milk topped with granola, fresh fruits, and chia seeds.",
-      image: {
-        url: "https://images.unsplash.com/photo-1590301157890-4810ed352733?w=500",
-      },
-      category: "Breakfast",
-      prepTime: 10,
-      cookTime: 0,
-      likes: [],
-      comments: [],
-      isSample: true,
-    },
-  ];
-
-  const displayRecipes = recipes.length > 0 ? recipes : sampleRecipes;
+  const handleClearFilters = () => {
+    setCategory("");
+    setDietType("");
+    setSearch("");
+  };
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl sm:text-4xl font-serif font-bold text-savora-brown-800 mb-2">
-          Recipes
-        </h1>
-        <p className="text-savora-brown-500">
-          Discover delicious recipes for every occasion
-        </p>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+        <div>
+          <h1 className="text-3xl sm:text-4xl font-serif font-bold text-savora-brown-800 mb-2">
+            Recipes
+          </h1>
+          <p className="text-savora-brown-500">
+            Discover delicious recipes for every occasion
+          </p>
+        </div>
+
+        {isAuthenticated && (
+          <Link
+            to="/recipes/create"
+            className="btn-primary inline-flex items-center gap-2 self-start"
+          >
+            <Plus className="w-4 h-4" />
+            Add Recipe
+          </Link>
+        )}
       </div>
 
       {/* Search and Filters */}
@@ -282,6 +323,36 @@ const Recipes = () => {
             Search
           </button>
         </form>
+
+        {/* Active filters */}
+        {(category || dietType || search) && (
+          <div className="flex items-center gap-2 mt-4 pt-4 border-t border-savora-beige-200">
+            <span className="text-sm text-savora-brown-500">
+              Active filters:
+            </span>
+            {category && (
+              <span className="px-2 py-1 bg-savora-green-50 text-savora-green-600 text-xs rounded-full">
+                {category}
+              </span>
+            )}
+            {dietType && (
+              <span className="px-2 py-1 bg-savora-beige-100 text-savora-brown-600 text-xs rounded-full">
+                {dietType}
+              </span>
+            )}
+            {search && (
+              <span className="px-2 py-1 bg-savora-brown-100 text-savora-brown-600 text-xs rounded-full">
+                "{search}"
+              </span>
+            )}
+            <button
+              onClick={handleClearFilters}
+              className="text-xs text-savora-brown-400 hover:text-savora-brown-600 underline ml-2"
+            >
+              Clear all
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Recipes List */}
@@ -291,22 +362,40 @@ const Recipes = () => {
         </div>
       ) : error ? (
         <div className="text-center py-12">
-          <p className="text-savora-brown-500">{error}</p>
+          <ChefHat className="w-16 h-16 text-savora-brown-300 mx-auto mb-4" />
+          <h3 className="text-xl font-serif font-semibold text-savora-brown-700 mb-2">
+            {error}
+          </h3>
+          <button onClick={fetchRecipes} className="btn-primary mt-4">
+            Try Again
+          </button>
         </div>
-      ) : displayRecipes.length === 0 ? (
+      ) : recipes.length === 0 ? (
         <div className="text-center py-12">
           <ChefHat className="w-16 h-16 text-savora-brown-300 mx-auto mb-4" />
           <h3 className="text-xl font-serif font-semibold text-savora-brown-700 mb-2">
             No recipes found
           </h3>
-          <p className="text-savora-brown-500">
-            Try adjusting your search or filters
+          <p className="text-savora-brown-500 mb-6">
+            {category || dietType || search
+              ? "Try adjusting your search or filters"
+              : "Be the first to add a recipe!"}
           </p>
+          {isAuthenticated && (
+            <Link to="/recipes/create" className="btn-primary">
+              Add Your First Recipe
+            </Link>
+          )}
         </div>
       ) : (
         <div className="space-y-6">
-          {displayRecipes.map((recipe) => (
-            <RecipeCard key={recipe._id} recipe={recipe} onLike={handleLike} />
+          {recipes.map((recipe) => (
+            <RecipeCard
+              key={recipe._id}
+              recipe={recipe}
+              onLike={handleLike}
+              currentUserId={user?._id}
+            />
           ))}
         </div>
       )}

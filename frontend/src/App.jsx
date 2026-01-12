@@ -15,6 +15,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Recipes from "./pages/Recipes";
 import RecipeDetail from "./pages/RecipeDetail";
+import CreateRecipe from "./pages/CreateRecipe";
 import MealPlanner from "./pages/MealPlanner";
 import Shopping from "./pages/Shopping";
 import Cart from "./pages/Cart";
@@ -42,6 +43,14 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/recipes" element={<Recipes />} />
               <Route path="/recipes/:id" element={<RecipeDetail />} />
+              <Route
+                path="/recipes/create"
+                element={
+                  <ProtectedRoute>
+                    <CreateRecipe />
+                  </ProtectedRoute>
+                }
+              />
               <Route path="/meal-planner" element={<MealPlanner />} />
               <Route path="/shopping" element={<Shopping />} />
               <Route path="/cart" element={<Cart />} />

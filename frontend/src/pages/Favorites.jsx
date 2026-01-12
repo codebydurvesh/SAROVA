@@ -44,39 +44,6 @@ const Favorites = () => {
     await toggleFavorite(recipeId);
   };
 
-  // Sample favorites for display
-  // Note: These are display-only samples - clicking will show "Recipe not found"
-  const sampleFavorites = [
-    {
-      _id: "sample_favorite_001",
-      title: "Mediterranean Quinoa Bowl",
-      description:
-        "A healthy and colorful bowl featuring fluffy quinoa, fresh vegetables, and creamy hummus.",
-      image: {
-        url: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500",
-      },
-      category: "Lunch",
-      prepTime: 15,
-      cookTime: 20,
-      difficulty: "Easy",
-      isSample: true,
-    },
-    {
-      _id: "sample_favorite_002",
-      title: "Classic Avocado Toast",
-      description:
-        "Perfectly toasted sourdough with creamy avocado, cherry tomatoes, and microgreens.",
-      image: {
-        url: "https://images.unsplash.com/photo-1541519227354-08fa5d50c44d?w=500",
-      },
-      category: "Breakfast",
-      prepTime: 5,
-      cookTime: 5,
-      difficulty: "Easy",
-      isSample: true,
-    },
-  ];
-
   if (!isAuthenticated) {
     return (
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -96,8 +63,6 @@ const Favorites = () => {
     );
   }
 
-  const displayRecipes = recipes.length > 0 ? recipes : sampleFavorites;
-
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Header */}
@@ -114,7 +79,7 @@ const Favorites = () => {
         <div className="flex justify-center py-12">
           <LoadingSpinner size="lg" />
         </div>
-      ) : displayRecipes.length === 0 ? (
+      ) : recipes.length === 0 ? (
         <div className="text-center py-16">
           <Heart className="w-20 h-20 text-savora-brown-300 mx-auto mb-6" />
           <h2 className="text-2xl font-serif font-bold text-savora-brown-800 mb-2">
@@ -129,7 +94,7 @@ const Favorites = () => {
         </div>
       ) : (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {displayRecipes.map((recipe) => (
+          {recipes.map((recipe) => (
             <motion.div
               key={recipe._id}
               initial={{ opacity: 0, y: 20 }}
@@ -139,7 +104,10 @@ const Favorites = () => {
               <div className="relative -mx-6 -mt-6 mb-4">
                 <Link to={`/recipes/${recipe._id}`}>
                   <img
-                    src={recipe.image?.url}
+                    src={
+                      recipe.image?.url ||
+                      "https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=600"
+                    }
                     alt={recipe.title}
                     className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                   />
@@ -168,11 +136,13 @@ const Favorites = () => {
               <div className="flex items-center gap-4 text-sm text-savora-brown-400">
                 <div className="flex items-center gap-1">
                   <Clock className="w-4 h-4" />
-                  <span>{recipe.prepTime + recipe.cookTime} min</span>
+                  <span>
+                    {(recipe.prepTime || 0) + (recipe.cookTime || 0)} min
+                  </span>
                 </div>
                 <div className="flex items-center gap-1">
                   <ChefHat className="w-4 h-4" />
-                  <span>{recipe.difficulty}</span>
+                  <span>{recipe.difficulty || "Medium"}</span>
                 </div>
               </div>
             </motion.div>

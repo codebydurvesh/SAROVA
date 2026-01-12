@@ -10,6 +10,7 @@ import {
   MessageCircle,
   Share2,
   BookmarkPlus,
+  Check,
 } from "lucide-react";
 import recipeService from "../services/recipeService";
 import { useAuth } from "../context/AuthContext";
@@ -22,25 +23,42 @@ import LoadingSpinner from "../components/LoadingSpinner";
 const RecipeDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { isAuthenticated, toggleFavorite, isFavorite } = useAuth();
+  const { isAuthenticated, user, toggleFavorite, isFavorite } = useAuth();
 
   const [recipe, setRecipe] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [comment, setComment] = useState("");
   const [isLiked, setIsLiked] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const [imageError, setImageError] = useState(false);
+
+  // Fallback image
+  const fallbackImage =
+    "https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=800";
 
   useEffect(() => {
     fetchRecipe();
   }, [id]);
 
+  useEffect(() => {
+    // Check if current user has liked this recipe
+    if (recipe && user) {
+      const liked = recipe.likes?.some(
+        (like) => like.toString() === user._id?.toString()
+      );
+      setIsLiked(liked);
+    }
+  }, [recipe, user]);
+
   const fetchRecipe = async () => {
     try {
       setLoading(true);
+      setError(null);
       const response = await recipeService.getRecipeById(id);
       setRecipe(response.data.recipe);
     } catch (err) {
-      setError("Recipe not found");
+      setError(err.response?.data?.message || "Recipe not found");
       console.error(err);
     } finally {
       setLoading(false);
@@ -84,78 +102,30 @@ const RecipeDetail = () => {
     await toggleFavorite(id);
   };
 
-  // Sample recipe for display
-  const sampleRecipe = {
-    _id: id,
-    title: "Mediterranean Quinoa Bowl",
-    description:
-      "A healthy and colorful bowl featuring fluffy quinoa, fresh vegetables, creamy hummus, and a tangy lemon dressing. Perfect for a nutritious lunch or light dinner.",
-    image: {
-      url: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=800",
-    },
-    category: "Lunch",
-    dietType: "Balanced",
-    prepTime: 15,
-    cookTime: 20,
-    servings: 2,
-    difficulty: "Easy",
-    likes: [],
-    comments: [],
-    ingredients: [
-      { name: "Quinoa", quantity: "1 cup" },
-      { name: "Cherry tomatoes", quantity: "1 cup, halved" },
-      { name: "Cucumber", quantity: "1 medium, diced" },
-      { name: "Red onion", quantity: "1/4, thinly sliced" },
-      { name: "Kalamata olives", quantity: "1/3 cup" },
-      { name: "Feta cheese", quantity: "1/2 cup, crumbled" },
-      { name: "Hummus", quantity: "1/2 cup" },
-      { name: "Olive oil", quantity: "2 tbsp" },
-      { name: "Lemon juice", quantity: "2 tbsp" },
-      { name: "Fresh herbs", quantity: "to taste" },
-    ],
-    steps: [
-      {
-        stepNumber: 1,
-        instruction:
-          "Rinse quinoa under cold water and cook according to package instructions. Let it cool slightly.",
-      },
-      {
-        stepNumber: 2,
-        instruction:
-          "While quinoa cooks, prepare all vegetables - halve cherry tomatoes, dice cucumber, and thinly slice red onion.",
-      },
-      {
-        stepNumber: 3,
-        instruction:
-          "In a small bowl, whisk together olive oil, lemon juice, salt, and pepper to make the dressing.",
-      },
-      {
-        stepNumber: 4,
-        instruction: "Divide cooked quinoa between two bowls as the base.",
-      },
-      {
-        stepNumber: 5,
-        instruction:
-          "Arrange cherry tomatoes, cucumber, red onion, and olives on top of the quinoa in sections.",
-      },
-      {
-        stepNumber: 6,
-        instruction: "Add a generous dollop of hummus to each bowl.",
-      },
-      {
-        stepNumber: 7,
-        instruction: "Sprinkle crumbled feta cheese over the top.",
-      },
-      {
-        stepNumber: 8,
-        instruction:
-          "Drizzle with the lemon dressing and garnish with fresh herbs. Serve immediately.",
-      },
-    ],
-    author: { name: "SAVORA Kitchen" },
-  };
+  const handleShare = async () => {
+    const url = `${window.location.origin}/recipes/${id}`;
 
-  const displayRecipe = recipe || sampleRecipe;
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: recipe?.title || "SAVORA Recipe",
+          text: recipe?.description || "Check out this recipe!",
+          url: url,
+        });
+      } catch (err) {
+        console.log("Share cancelled");
+      }
+    } else {
+      // Fallback: copy to clipboard
+      try {
+        await navigator.clipboard.writeText(url);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      } catch (err) {
+        console.error("Failed to copy:", err);
+      }
+    }
+  };
 
   if (loading) {
     return (
@@ -165,12 +135,12 @@ const RecipeDetail = () => {
     );
   }
 
-  if (error && !sampleRecipe) {
+  if (error || !recipe) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <h2 className="text-2xl font-serif font-bold text-savora-brown-800 mb-2">
-            {error}
+            {error || "Recipe not found"}
           </h2>
           <Link to="/recipes" className="link">
             Back to recipes
@@ -199,43 +169,61 @@ const RecipeDetail = () => {
         {/* Hero image */}
         <div className="relative rounded-2xl overflow-hidden mb-8">
           <img
-            src={displayRecipe.image?.url}
-            alt={displayRecipe.title}
+            src={
+              imageError ? fallbackImage : recipe.image?.url || fallbackImage
+            }
+            alt={recipe.title}
             className="w-full h-64 sm:h-96 object-cover"
+            onError={() => setImageError(true)}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
 
           {/* Category badge */}
-          <div className="absolute top-4 left-4">
+          <div className="absolute top-4 left-4 flex gap-2">
             <span className="px-4 py-2 bg-white/90 backdrop-blur-sm text-savora-green-600 text-sm font-medium rounded-full">
-              {displayRecipe.category}
+              {recipe.category}
             </span>
+            {recipe.dietType && (
+              <span className="px-4 py-2 bg-white/90 backdrop-blur-sm text-savora-brown-600 text-sm font-medium rounded-full">
+                {recipe.dietType}
+              </span>
+            )}
           </div>
         </div>
 
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl sm:text-4xl font-serif font-bold text-savora-brown-800 mb-4">
-            {displayRecipe.title}
+            {recipe.title}
           </h1>
 
-          <p className="text-savora-brown-500 text-lg leading-relaxed mb-6">
-            {displayRecipe.description}
+          <p className="text-savora-brown-500 text-lg leading-relaxed mb-4">
+            {recipe.description}
           </p>
+
+          {/* Author */}
+          {recipe.author?.name && (
+            <p className="text-savora-brown-500 mb-6">
+              Recipe by{" "}
+              <span className="font-semibold text-savora-green-600">
+                {recipe.author.name}
+              </span>
+            </p>
+          )}
 
           {/* Meta info */}
           <div className="flex flex-wrap items-center gap-6 mb-6">
             <div className="flex items-center gap-2 text-savora-brown-500">
               <Clock className="w-5 h-5" />
-              <span>{displayRecipe.prepTime + displayRecipe.cookTime} min</span>
+              <span>{(recipe.prepTime || 0) + (recipe.cookTime || 0)} min</span>
             </div>
             <div className="flex items-center gap-2 text-savora-brown-500">
               <Users className="w-5 h-5" />
-              <span>{displayRecipe.servings} servings</span>
+              <span>{recipe.servings || 2} servings</span>
             </div>
             <div className="flex items-center gap-2 text-savora-brown-500">
               <ChefHat className="w-5 h-5" />
-              <span>{displayRecipe.difficulty}</span>
+              <span>{recipe.difficulty || "Medium"}</span>
             </div>
           </div>
 
@@ -250,7 +238,7 @@ const RecipeDetail = () => {
               }`}
             >
               <Heart className={`w-5 h-5 ${isLiked ? "fill-current" : ""}`} />
-              <span>{displayRecipe.likes?.length || 0}</span>
+              <span>{recipe.likes?.length || 0}</span>
             </button>
 
             <button
@@ -265,9 +253,21 @@ const RecipeDetail = () => {
               <span>Save</span>
             </button>
 
-            <button className="flex items-center gap-2 px-4 py-2 rounded-xl bg-savora-beige-100 text-savora-brown-500 hover:bg-savora-beige-200 transition-colors">
-              <Share2 className="w-5 h-5" />
-              <span>Share</span>
+            <button
+              onClick={handleShare}
+              className="flex items-center gap-2 px-4 py-2 rounded-xl bg-savora-beige-100 text-savora-brown-500 hover:bg-savora-beige-200 transition-colors"
+            >
+              {copied ? (
+                <>
+                  <Check className="w-5 h-5 text-green-500" />
+                  <span className="text-green-500">Copied!</span>
+                </>
+              ) : (
+                <>
+                  <Share2 className="w-5 h-5" />
+                  <span>Share</span>
+                </>
+              )}
             </button>
           </div>
         </div>
@@ -281,7 +281,7 @@ const RecipeDetail = () => {
                 Ingredients
               </h2>
               <ul className="space-y-3">
-                {displayRecipe.ingredients?.map((ingredient, index) => (
+                {recipe.ingredients?.map((ingredient, index) => (
                   <li
                     key={index}
                     className="flex items-start gap-3 text-savora-brown-600"
@@ -305,7 +305,7 @@ const RecipeDetail = () => {
               Instructions
             </h2>
             <ol className="space-y-6">
-              {displayRecipe.steps?.map((step) => (
+              {recipe.steps?.map((step) => (
                 <li key={step.stepNumber} className="flex gap-4">
                   <span className="flex-shrink-0 w-8 h-8 bg-savora-green-500 text-white rounded-full flex items-center justify-center font-semibold text-sm">
                     {step.stepNumber}
@@ -322,7 +322,7 @@ const RecipeDetail = () => {
         {/* Comments section */}
         <div className="border-t border-savora-beige-200 pt-8">
           <h2 className="text-xl font-serif font-semibold text-savora-brown-800 mb-6">
-            Comments ({displayRecipe.comments?.length || 0})
+            Comments ({recipe.comments?.length || 0})
           </h2>
 
           {/* Comment form */}
@@ -346,9 +346,9 @@ const RecipeDetail = () => {
           </form>
 
           {/* Comments list */}
-          {displayRecipe.comments?.length > 0 ? (
+          {recipe.comments?.length > 0 ? (
             <div className="space-y-4">
-              {displayRecipe.comments.map((c, index) => (
+              {recipe.comments.map((c, index) => (
                 <div key={index} className="card">
                   <div className="flex items-center gap-3 mb-2">
                     <div className="w-10 h-10 bg-savora-green-100 rounded-full flex items-center justify-center">

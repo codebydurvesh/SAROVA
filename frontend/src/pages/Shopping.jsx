@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Plus, Minus, ShoppingBag, Search } from "lucide-react";
+import { Plus, Minus, ShoppingBag, Search, RefreshCw } from "lucide-react";
 import ingredientService from "../services/ingredientService";
 import { useCart } from "../context/CartContext";
 import LoadingSpinner from "../components/LoadingSpinner";
@@ -12,6 +12,7 @@ const IngredientCard = ({ ingredient }) => {
   const { addToCart, getCartItem, incrementQuantity, decrementQuantity } =
     useCart();
   const [quantity, setQuantity] = useState(1);
+  const [imageError, setImageError] = useState(false);
 
   const cartItem = getCartItem(ingredient._id);
   const isInCart = !!cartItem;
@@ -21,19 +22,25 @@ const IngredientCard = ({ ingredient }) => {
     setQuantity(1);
   };
 
+  // Fallback image
+  const fallbackImage =
+    "https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=400";
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       className="card hover:shadow-soft-lg transition-all duration-300 flex flex-col"
-      style={{ aspectRatio: "9/12" }}
     >
       {/* Image */}
       <div className="relative h-40 -mx-6 -mt-6 mb-4">
         <img
-          src={ingredient.image?.url}
+          src={
+            imageError ? fallbackImage : ingredient.image?.url || fallbackImage
+          }
           alt={ingredient.name}
           className="w-full h-full object-cover rounded-t-2xl"
+          onError={() => setImageError(true)}
         />
         <span className="absolute top-3 left-3 px-2 py-1 bg-white/90 backdrop-blur-sm text-savora-green-600 text-xs font-medium rounded-full">
           {ingredient.category}
@@ -123,8 +130,10 @@ const IngredientCard = ({ ingredient }) => {
 const Shopping = () => {
   const [ingredients, setIngredients] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [seeding, setSeeding] = useState(false);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("");
+  const [error, setError] = useState(null);
 
   const categories = [
     "Vegetables",
@@ -137,143 +146,6 @@ const Shopping = () => {
     "Other",
   ];
 
-  // Sample ingredients for display
-  // Note: These are display-only samples when no backend data available
-  const sampleIngredients = [
-    {
-      _id: "sample_ingredient_001",
-      name: "Tomatoes",
-      image: {
-        url: "https://images.unsplash.com/photo-1546470427-227c7369a9b9?w=400",
-      },
-      category: "Vegetables",
-      unit: "kg",
-      pricePerUnit: 40,
-      description: "Fresh red tomatoes",
-    },
-    {
-      _id: "sample_ingredient_002",
-      name: "Onions",
-      image: {
-        url: "https://images.unsplash.com/photo-1618512496248-a07fe83aa8cb?w=400",
-      },
-      category: "Vegetables",
-      unit: "kg",
-      pricePerUnit: 30,
-      description: "Fresh onions",
-    },
-    {
-      _id: "sample_ingredient_003",
-      name: "Chicken Breast",
-      image: {
-        url: "https://images.unsplash.com/photo-1604503468506-a8da13d82791?w=400",
-      },
-      category: "Meat",
-      unit: "kg",
-      pricePerUnit: 280,
-      description: "Boneless chicken breast",
-    },
-    {
-      _id: "sample_ingredient_004",
-      name: "Basmati Rice",
-      image: {
-        url: "https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400",
-      },
-      category: "Grains",
-      unit: "kg",
-      pricePerUnit: 120,
-      description: "Premium basmati rice",
-    },
-    {
-      _id: "sample_ingredient_005",
-      name: "Spinach",
-      image: {
-        url: "https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=400",
-      },
-      category: "Vegetables",
-      unit: "bunch",
-      pricePerUnit: 25,
-      description: "Fresh green spinach",
-    },
-    {
-      _id: "sample_ingredient_006",
-      name: "Eggs",
-      image: {
-        url: "https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?w=400",
-      },
-      category: "Dairy",
-      unit: "dozen",
-      pricePerUnit: 80,
-      description: "Farm fresh eggs",
-    },
-    {
-      _id: "sample_ingredient_007",
-      name: "Garlic",
-      image: {
-        url: "https://images.unsplash.com/photo-1540148426945-6cf22a6b2f85?w=400",
-      },
-      category: "Vegetables",
-      unit: "100g",
-      pricePerUnit: 45,
-      description: "Fresh garlic cloves",
-    },
-    {
-      _id: "sample_ingredient_008",
-      name: "Olive Oil",
-      image: {
-        url: "https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=400",
-      },
-      category: "Other",
-      unit: "liter",
-      pricePerUnit: 450,
-      description: "Extra virgin olive oil",
-    },
-    {
-      _id: "sample_ingredient_009",
-      name: "Bell Peppers",
-      image: {
-        url: "https://images.unsplash.com/photo-1563565375-f3fdfdbefa83?w=400",
-      },
-      category: "Vegetables",
-      unit: "kg",
-      pricePerUnit: 80,
-      description: "Mixed color bell peppers",
-    },
-    {
-      _id: "sample_ingredient_010",
-      name: "Milk",
-      image: {
-        url: "https://images.unsplash.com/photo-1563636619-e9143da7973b?w=400",
-      },
-      category: "Dairy",
-      unit: "liter",
-      pricePerUnit: 60,
-      description: "Fresh whole milk",
-    },
-    {
-      _id: "sample_ingredient_011",
-      name: "Salmon",
-      image: {
-        url: "https://images.unsplash.com/photo-1599084993091-1cb5c0721cc6?w=400",
-      },
-      category: "Seafood",
-      unit: "kg",
-      pricePerUnit: 800,
-      description: "Fresh Atlantic salmon",
-    },
-    {
-      _id: "sample_ingredient_012",
-      name: "Avocado",
-      image: {
-        url: "https://images.unsplash.com/photo-1523049673857-eb18f1d7b578?w=400",
-      },
-      category: "Fruits",
-      unit: "piece",
-      pricePerUnit: 120,
-      description: "Ripe Hass avocado",
-    },
-  ];
-
   useEffect(() => {
     fetchIngredients();
   }, [category]);
@@ -281,6 +153,7 @@ const Shopping = () => {
   const fetchIngredients = async () => {
     try {
       setLoading(true);
+      setError(null);
       const params = {};
       if (category) params.category = category;
       if (search) params.search = search;
@@ -289,10 +162,23 @@ const Shopping = () => {
       setIngredients(response.data.ingredients);
     } catch (err) {
       console.error("Failed to fetch ingredients:", err);
-      // Use sample data on error
+      setError("Failed to load ingredients. Please try again.");
       setIngredients([]);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleSeedIngredients = async () => {
+    try {
+      setSeeding(true);
+      await ingredientService.seedIngredients();
+      await fetchIngredients();
+    } catch (err) {
+      console.error("Failed to seed ingredients:", err);
+      setError("Failed to seed ingredients.");
+    } finally {
+      setSeeding(false);
     }
   };
 
@@ -300,14 +186,6 @@ const Shopping = () => {
     e.preventDefault();
     fetchIngredients();
   };
-
-  // Filter sample ingredients based on category
-  const filteredSamples = category
-    ? sampleIngredients.filter((i) => i.category === category)
-    : sampleIngredients;
-
-  const displayIngredients =
-    ingredients.length > 0 ? ingredients : filteredSamples;
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -362,19 +240,43 @@ const Shopping = () => {
         <div className="flex justify-center py-12">
           <LoadingSpinner size="lg" />
         </div>
-      ) : displayIngredients.length === 0 ? (
+      ) : error ? (
+        <div className="text-center py-12">
+          <ShoppingBag className="w-16 h-16 text-savora-brown-300 mx-auto mb-4" />
+          <h3 className="text-xl font-serif font-semibold text-savora-brown-700 mb-2">
+            {error}
+          </h3>
+          <button onClick={fetchIngredients} className="btn-primary mt-4">
+            Try Again
+          </button>
+        </div>
+      ) : ingredients.length === 0 ? (
         <div className="text-center py-12">
           <ShoppingBag className="w-16 h-16 text-savora-brown-300 mx-auto mb-4" />
           <h3 className="text-xl font-serif font-semibold text-savora-brown-700 mb-2">
             No ingredients found
           </h3>
-          <p className="text-savora-brown-500">
-            Try adjusting your search or filters
+          <p className="text-savora-brown-500 mb-6">
+            {category || search
+              ? "Try adjusting your search or filters"
+              : "Click below to load sample ingredients"}
           </p>
+          {!category && !search && (
+            <button
+              onClick={handleSeedIngredients}
+              disabled={seeding}
+              className="btn-primary inline-flex items-center gap-2"
+            >
+              <RefreshCw
+                className={`w-4 h-4 ${seeding ? "animate-spin" : ""}`}
+              />
+              {seeding ? "Loading ingredients..." : "Load Sample Ingredients"}
+            </button>
+          )}
         </div>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-          {displayIngredients.map((ingredient) => (
+          {ingredients.map((ingredient) => (
             <IngredientCard key={ingredient._id} ingredient={ingredient} />
           ))}
         </div>
