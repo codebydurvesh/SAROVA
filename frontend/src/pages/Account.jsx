@@ -34,13 +34,6 @@ const Account = () => {
       color: "text-savora-green-600",
       bgColor: "bg-savora-green-50",
     },
-    {
-      icon: Calendar,
-      label: "Meal Plans",
-      value: 1,
-      color: "text-savora-brown-600",
-      bgColor: "bg-savora-brown-50",
-    },
   ];
 
   return (

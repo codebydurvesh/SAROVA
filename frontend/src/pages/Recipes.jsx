@@ -236,8 +236,25 @@ const Recipes = () => {
       return;
     }
     try {
+      // Optimistically update UI
+      setRecipes((prevRecipes) =>
+        prevRecipes.map((recipe) => {
+          if (recipe._id !== recipeId) return recipe;
+          const hasLiked = recipe.likes?.some(
+            (like) => like.toString() === user?._id?.toString()
+          );
+          let newLikes;
+          if (hasLiked) {
+            newLikes = recipe.likes.filter(
+              (like) => like.toString() !== user?._id?.toString()
+            );
+          } else {
+            newLikes = [...(recipe.likes || []), user._id];
+          }
+          return { ...recipe, likes: newLikes };
+        })
+      );
       await recipeService.toggleLike(recipeId);
-      fetchRecipes(); // Refresh to get updated like count
     } catch (err) {
       console.error("Failed to like recipe:", err);
     }
