@@ -261,13 +261,19 @@ export const deleteRecipe = asyncHandler(async (req, res) => {
  * @access  Public
  */
 export const seedRecipes = asyncHandler(async (req, res) => {
-  // Check if recipes already exist
+  // Check for force reseed
+  const force = req.query.force === "true" || req.query.force === true;
   const existingCount = await Recipe.countDocuments();
-  if (existingCount > 0) {
+  if (existingCount > 0 && !force) {
     return res.status(200).json({
       success: true,
       message: `${existingCount} recipes already exist. Skipping seed.`,
     });
+  }
+
+  // If force, delete all recipes
+  if (force && existingCount > 0) {
+    await Recipe.deleteMany({});
   }
 
   // Create a system user for sample recipes if not exists
@@ -623,7 +629,7 @@ export const seedRecipes = asyncHandler(async (req, res) => {
       description:
         "Delicious Mexican-style tacos with seasoned ground beef, fresh salsa, and all your favorite toppings.",
       image: {
-        url: "https://images.pexels.com/photos/2092507/pexels-photo-2092507.jpeg?auto=compress&cs=tinysrgb&w=800",
+        url: "https://media.istockphoto.com/id/1333647378/photo/homemade-american-soft-shell-beef-tacos.jpg?s=612x612&w=0&k=20&c=ZHhpFNbH_BO4MaXzmcKLjC4cPRptdXlp6IVUfs1sBEs=",
         publicId: "sample-tacos",
       },
       ingredients: [
@@ -715,7 +721,7 @@ export const seedRecipes = asyncHandler(async (req, res) => {
       description:
         "Decadent individual chocolate cakes with a molten center. An impressive dessert that's easier than you think!",
       image: {
-        url: "https://images.pexels.com/photos/4110003/pexels-photo-4110003.jpeg?auto=compress&cs=tinysrgb&w=800",
+        url: "https://media.istockphoto.com/id/544716244/photo/warm-chocolate-lava-cake-with-molten-center-and-red-currants.jpg?s=612x612&w=0&k=20&c=i1rRa1x7D1pu-INKabmC21BaU9MC8ZRQdcC7dBLdzUo=",
         publicId: "sample-lava-cake",
       },
       ingredients: [
@@ -802,7 +808,7 @@ export const seedRecipes = asyncHandler(async (req, res) => {
       description:
         "Moist and delicious banana bread made with ripe bananas. A comforting classic that's perfect with coffee.",
       image: {
-        url: "https://images.pexels.com/photos/830894/pexels-photo-830894.jpeg?auto=compress&cs=tinysrgb&w=800",
+        url: "https://media.istockphoto.com/id/1147312072/photo/banana-bread-loaf-on-wooden-table.jpg?s=612x612&w=0&k=20&c=BWw5Ew5UhpFimfd6_VkfWXPBpuI0XFpm2Yp90C12Oi4=",
         publicId: "sample-banana-bread",
       },
       ingredients: [
@@ -851,7 +857,7 @@ export const seedRecipes = asyncHandler(async (req, res) => {
       description:
         "Tender chicken pieces in a rich, creamy tomato-based curry sauce. A beloved Indian restaurant favorite.",
       image: {
-        url: "https://images.pexels.com/photos/2474661/pexels-photo-2474661.jpeg?auto=compress&cs=tinysrgb&w=800",
+        url: "https://media.istockphoto.com/id/1735060474/photo/delicious-creamy-chicken-tikka-masala-surrounded-by-ingredients-close-up-in-a-bowl-horizontal.jpg?s=612x612&w=0&k=20&c=85b5F6-g_zxCWaoccAtMyokWho4L1XdNybUBJZyqszk=",
         publicId: "sample-tikka-masala",
       },
       ingredients: [
@@ -902,7 +908,7 @@ export const seedRecipes = asyncHandler(async (req, res) => {
       description:
         "A nourishing bowl filled with roasted vegetables, quinoa, chickpeas, and tahini dressing. Colorful and satisfying!",
       image: {
-        url: "https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=800",
+        url: "https://media.istockphoto.com/id/878734076/photo/healthy-organic-tofu-and-rice-buddha-bowl.jpg?s=612x612&w=0&k=20&c=RE8aZvjQEsr9r3x07IO5HWbaB2PW6xJC-7D9TnjSs9g=",
         publicId: "sample-buddha-bowl",
       },
       ingredients: [
@@ -948,7 +954,7 @@ export const seedRecipes = asyncHandler(async (req, res) => {
       description:
         "A refreshing Indian yogurt drink blended with sweet mango and cardamom. Perfect for cooling down on hot days.",
       image: {
-        url: "https://images.pexels.com/photos/3727255/pexels-photo-3727255.jpeg?auto=compress&cs=tinysrgb&w=800",
+        url: "https://media.istockphoto.com/id/1365859011/photo/drink-mango-lassi-in-two-glasses-on-rustic-concrete-table-with-fresh-ripe-cut-manfo-from-above.jpg?s=612x612&w=0&k=20&c=uHnr_0raQDe2sgUYHdP5GSa2raaj3ILG4m1cmFHtVJA=",
         publicId: "sample-mango-lassi",
       },
       ingredients: [
@@ -986,7 +992,7 @@ export const seedRecipes = asyncHandler(async (req, res) => {
       description:
         "A simple Italian sandwich with fresh mozzarella, ripe tomatoes, basil, and balsamic glaze on crusty bread.",
       image: {
-        url: "https://images.pexels.com/photos/1647163/pexels-photo-1647163.jpeg?auto=compress&cs=tinysrgb&w=800",
+        url: "https://media.istockphoto.com/id/1449737577/photo/pressed-and-toasted-panini-caprese-with-tomato-mozzarella-and-basil-caprese-panini-sandwich.jpg?s=612x612&w=0&k=20&c=PwBOktstNbfO0n0fXxcGkZKQpZbiB6aASl-sSw_40RA=",
         publicId: "sample-caprese",
       },
       ingredients: [
@@ -1027,7 +1033,7 @@ export const seedRecipes = asyncHandler(async (req, res) => {
       description:
         "Succulent shrimp sautéed in garlic butter and white wine, served over linguine. Restaurant quality at home!",
       image: {
-        url: "https://images.pexels.com/photos/725991/pexels-photo-725991.jpeg?auto=compress&cs=tinysrgb&w=800",
+        url: "https://media.istockphoto.com/id/1352567176/photo/homemade-cooked-shrimp-scampi-with-pasta.jpg?s=612x612&w=0&k=20&c=tnsG6m4i8IgZ3wdJ57f8tGivJ-BQwv8OslolWq1KciI=",
         publicId: "sample-shrimp-scampi",
       },
       ingredients: [
@@ -1075,7 +1081,7 @@ export const seedRecipes = asyncHandler(async (req, res) => {
       description:
         "A low-carb alternative to fried rice using cauliflower. Packed with vegetables and Asian flavors!",
       image: {
-        url: "https://images.pexels.com/photos/723198/pexels-photo-723198.jpeg?auto=compress&cs=tinysrgb&w=800",
+        url: "https://media.istockphoto.com/id/1132523140/photo/stir-fried-cauliflower-rice-in-a-bowl.jpg?s=612x612&w=0&k=20&c=Yw8VG2C-b_UHWZRSpCQNra88cwW-W-sW8z7TkKmI-oE=",
         publicId: "sample-cauliflower-rice",
       },
       ingredients: [

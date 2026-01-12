@@ -124,7 +124,7 @@ export const seedIngredients = asyncHandler(async (req, res) => {
     {
       name: "Garlic",
       image: {
-        url: "https://images.pexels.com/photos/4197444/pexels-photo-4197444.jpeg?auto=compress&cs=tinysrgb&w=400",
+        url: "https://media.istockphoto.com/id/531644839/photo/garlic.jpg?s=612x612&w=0&k=20&c=a5wogZyHd1tLmaYp9nldmjP0-MUL2KU68zS-LOqyMC0=",
       },
       category: "Vegetables",
       unit: "100g",
@@ -179,7 +179,7 @@ export const seedIngredients = asyncHandler(async (req, res) => {
     {
       name: "Broccoli",
       image: {
-        url: "https://images.pexels.com/photos/1459339/pexels-photo-1459339.jpeg?auto=compress&cs=tinysrgb&w=400",
+        url: "https://media.istockphoto.com/id/518951178/photo/fresh-raw-green-broccoli-in-bowl.jpg?s=612x612&w=0&k=20&c=wP_y_qqs6_hFVsnkE4MCHLNOOdQ11sg5MBuOjg2AygA=",
       },
       category: "Vegetables",
       unit: "kg",
@@ -326,7 +326,7 @@ export const seedIngredients = asyncHandler(async (req, res) => {
     {
       name: "Butter",
       image: {
-        url: "https://images.pexels.com/photos/531334/pexels-photo-531334.jpeg?auto=compress&cs=tinysrgb&w=400",
+        url: "https://media.istockphoto.com/id/1338222224/photo/butter-blocks-and-pieces-on-wooden-table-copy-space.jpg?s=612x612&w=0&k=20&c=65ZYwALchrY4iXYkfrchnnWKCpuP20TZvXnSSmWnBPM=",
       },
       category: "Dairy",
       unit: "200g",
@@ -337,7 +337,7 @@ export const seedIngredients = asyncHandler(async (req, res) => {
     {
       name: "Yogurt",
       image: {
-        url: "https://images.pexels.com/photos/1435706/pexels-photo-1435706.jpeg?auto=compress&cs=tinysrgb&w=400",
+        url: "https://media.istockphoto.com/id/177545720/photo/young-beautiful-woman-eating-yogurt-at-home.jpg?s=612x612&w=0&k=20&c=t_n0Aouu_fB5INzRVVYbXX1kwbmFsyZYtgltf6_0d-4=",
       },
       category: "Dairy",
       unit: "500g",
@@ -348,7 +348,7 @@ export const seedIngredients = asyncHandler(async (req, res) => {
     {
       name: "Cream",
       image: {
-        url: "https://images.pexels.com/photos/4110256/pexels-photo-4110256.jpeg?auto=compress&cs=tinysrgb&w=400",
+        url: "https://media.istockphoto.com/id/1494240398/photo/cooking-whipped-cream-with-hand-mixer-heavy-cream-powdered-sugar-ricotta-cheese-top-view-of.jpg?s=612x612&w=0&k=20&c=eimK5mF_jNkqPOdmrgsa_cv3cD-f0IeAufOgOyontsI=",
       },
       category: "Dairy",
       unit: "200ml",
@@ -361,7 +361,7 @@ export const seedIngredients = asyncHandler(async (req, res) => {
     {
       name: "Chicken Breast",
       image: {
-        url: "https://images.pexels.com/photos/616354/pexels-photo-616354.jpeg?auto=compress&cs=tinysrgb&w=400",
+        url: "https://media.istockphoto.com/id/511486326/photo/raw-chicken-fillets-close-up-isolated-on-white.jpg?s=612x612&w=0&k=20&c=ptabozbp4iO9pLZONQqjlUTSUfUl02Df37G19IOIfGU=",
       },
       category: "Meat",
       unit: "kg",
@@ -383,7 +383,7 @@ export const seedIngredients = asyncHandler(async (req, res) => {
     {
       name: "Lamb Chops",
       image: {
-        url: "https://images.pexels.com/photos/618775/pexels-photo-618775.jpeg?auto=compress&cs=tinysrgb&w=400",
+        url: "https://media.istockphoto.com/id/1367399513/photo/raw-lamb-chop-food-concept-photo.jpg?s=612x612&w=0&k=20&c=92f_fISYv3uWq8FwCvJ6j4E2oSEPy0yeBzx0HeXVBCA=",
       },
       category: "Meat",
       unit: "kg",
@@ -405,7 +405,7 @@ export const seedIngredients = asyncHandler(async (req, res) => {
     {
       name: "Pork Tenderloin",
       image: {
-        url: "https://images.pexels.com/photos/65175/pexels-photo-65175.jpeg?auto=compress&cs=tinysrgb&w=400",
+        url: "https://media.istockphoto.com/id/469354734/photo/fresh-and-raw-meat-sirloin-medallions-steaks.jpg?s=612x612&w=0&k=20&c=OH-FtjIgFS2psxomUDTZ450Zc35VvyZCQP2w64cbl_4=",
       },
       category: "Meat",
       unit: "kg",
@@ -416,7 +416,7 @@ export const seedIngredients = asyncHandler(async (req, res) => {
     {
       name: "Turkey",
       image: {
-        url: "https://images.pexels.com/photos/5718071/pexels-photo-5718071.jpeg?auto=compress&cs=tinysrgb&w=400",
+        url: "https://media.istockphoto.com/id/1042438108/photo/prepared-fresh-raw-chicken-for-cooking-on-a-cutting-wooden-board-top-view-selective-focus.jpg?s=612x612&w=0&k=20&c=XhfTORhlSWkwFc2fp67X2VBqJXOoSqaed29Rtabyq60=",
       },
       category: "Meat",
       unit: "kg",
@@ -429,7 +429,7 @@ export const seedIngredients = asyncHandler(async (req, res) => {
     {
       name: "Salmon",
       image: {
-        url: "https://images.pexels.com/photos/3296279/pexels-photo-3296279.jpeg?auto=compress&cs=tinysrgb&w=400",
+        url: "https://media.istockphoto.com/id/187533849/photo/salmon-fillets.jpg?s=612x612&w=0&k=20&c=lrlRXYfXY6588lN8OZwHlrgi9vP440k17pDstvDTaPI=",
       },
       category: "Seafood",
       unit: "kg",
@@ -451,7 +451,7 @@ export const seedIngredients = asyncHandler(async (req, res) => {
     {
       name: "Tuna",
       image: {
-        url: "https://images.pexels.com/photos/8969899/pexels-photo-8969899.jpeg?auto=compress&cs=tinysrgb&w=400",
+        url: "https://media.istockphoto.com/id/1237538057/photo/raw-tuna-steak-with-ingredients-ready-to-cook.jpg?s=612x612&w=0&k=20&c=zgkjYmWvFo_SXn8U02IwhsL5G9bTg8JzFMpy8l1s65s=",
       },
       category: "Seafood",
       unit: "kg",
@@ -462,7 +462,7 @@ export const seedIngredients = asyncHandler(async (req, res) => {
     {
       name: "Cod Fish",
       image: {
-        url: "https://images.pexels.com/photos/3640451/pexels-photo-3640451.jpeg?auto=compress&cs=tinysrgb&w=400",
+        url: "https://media.istockphoto.com/id/1455502757/photo/ceramic-plate-with-fresh-cod-fish-rosemary-lime-salt.jpg?s=612x612&w=0&k=20&c=UCEgRzOPow_TyRA4YS7KSyhqFpwTLeq99ireHu2hylg=",
       },
       category: "Seafood",
       unit: "kg",
@@ -486,7 +486,7 @@ export const seedIngredients = asyncHandler(async (req, res) => {
     {
       name: "Pasta",
       image: {
-        url: "https://images.pexels.com/photos/1279330/pexels-photo-1279330.jpeg?auto=compress&cs=tinysrgb&w=400",
+        url: "https://media.istockphoto.com/id/1405668886/photo/yellow-uncooked-penne-rigate-pasta-in-a-bowl.jpg?s=612x612&w=0&k=20&c=-xvn3xZ22r-C3ZjOz6hQmotzWaQWeYWO_IHKagqnTiE=",
       },
       category: "Grains",
       unit: "500g",
@@ -497,7 +497,7 @@ export const seedIngredients = asyncHandler(async (req, res) => {
     {
       name: "Quinoa",
       image: {
-        url: "https://images.pexels.com/photos/6072017/pexels-photo-6072017.jpeg?auto=compress&cs=tinysrgb&w=400",
+        url: "https://media.istockphoto.com/id/1440082392/photo/mixed-raw-quinoa-in-bowls-on-a-wooden-background-healthy-and-gluten-free-food.jpg?s=612x612&w=0&k=20&c=jbdTYlIfpFgCSmAk_cobYcBWiL2k4i8pLx4yxUg2U_o=",
       },
       category: "Grains",
       unit: "500g",
@@ -521,7 +521,7 @@ export const seedIngredients = asyncHandler(async (req, res) => {
     {
       name: "Black Pepper",
       image: {
-        url: "https://images.pexels.com/photos/4198745/pexels-photo-4198745.jpeg?auto=compress&cs=tinysrgb&w=400",
+        url: "https://media.istockphoto.com/id/1301622377/photo/ground-black-pepper-in-a-wooden-bowl-and-peppercorns-on-a-white-background-isolated-top-view.jpg?s=612x612&w=0&k=20&c=xPqOOYHRslVzSSlFAyLc9evjCFgLW2oHxgvmw8uR1Nc=",
       },
       category: "Spices",
       unit: "100g",
@@ -532,7 +532,7 @@ export const seedIngredients = asyncHandler(async (req, res) => {
     {
       name: "Cumin",
       image: {
-        url: "https://images.pexels.com/photos/4198936/pexels-photo-4198936.jpeg?auto=compress&cs=tinysrgb&w=400",
+        url: "https://media.istockphoto.com/id/585162374/photo/cumin-seeds-in-wooden-spoon.jpg?s=612x612&w=0&k=20&c=3HIQc474YlkE4NAkHjWLCAxoWPd04XFC9ig2fn7V5RI=",
       },
       category: "Spices",
       unit: "100g",
@@ -543,7 +543,7 @@ export const seedIngredients = asyncHandler(async (req, res) => {
     {
       name: "Turmeric",
       image: {
-        url: "https://images.pexels.com/photos/4198897/pexels-photo-4198897.jpeg?auto=compress&cs=tinysrgb&w=400",
+        url: "https://media.istockphoto.com/id/1164067237/photo/turmeric-roots-and-powder-in-wood-spoon.jpg?s=612x612&w=0&k=20&c=gv4pG5WhnmdNGrpepXb3WC65DEoAz3x2P4oi8Htx64Q=",
       },
       category: "Spices",
       unit: "100g",
@@ -554,7 +554,7 @@ export const seedIngredients = asyncHandler(async (req, res) => {
     {
       name: "Cinnamon",
       image: {
-        url: "https://images.pexels.com/photos/6039349/pexels-photo-6039349.jpeg?auto=compress&cs=tinysrgb&w=400",
+        url: "https://media.istockphoto.com/id/1269840184/photo/scented-spices-background-cinnamon-powder-cinnamon-sticks-star-anise-and-cloves.jpg?s=612x612&w=0&k=20&c=46HCCaLYK0KmgKUc_2Nxfzqqpq86maJzEdD6AeILQJU=",
       },
       category: "Spices",
       unit: "100g",
@@ -567,7 +567,7 @@ export const seedIngredients = asyncHandler(async (req, res) => {
     {
       name: "Olive Oil",
       image: {
-        url: "https://images.pexels.com/photos/1022385/pexels-photo-1022385.jpeg?auto=compress&cs=tinysrgb&w=400",
+        url: "https://media.istockphoto.com/id/464433694/photo/olive-oil.jpg?s=612x612&w=0&k=20&c=2JGwS4mtdJngCwgdnZfd7PS1l2r5wtzfva2K8zGRBYY=",
       },
       category: "Other",
       unit: "liter",
@@ -589,7 +589,7 @@ export const seedIngredients = asyncHandler(async (req, res) => {
     {
       name: "Soy Sauce",
       image: {
-        url: "https://images.pexels.com/photos/6249498/pexels-photo-6249498.jpeg?auto=compress&cs=tinysrgb&w=400",
+        url: "https://media.istockphoto.com/id/1184706240/photo/teriyaki-sauce-image-with-chicken-and-broccoli.jpg?s=612x612&w=0&k=20&c=XjemnAAkYB3zG9RQD3hD1TeIqlSFQQ40EZ3sPQ19XYU=",
       },
       category: "Other",
       unit: "250ml",
