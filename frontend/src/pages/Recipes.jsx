@@ -280,13 +280,10 @@ const Recipes = () => {
         </div>
 
         {isAuthenticated && (
-          <Link
-            to="/recipes/create"
-            className="btn-primary inline-flex items-center gap-2 self-start"
-          >
+          <div className="btn-primary inline-flex items-center gap-2 self-start">
             <Plus className="w-4 h-4" />
             Add Recipe
-          </Link>
+          </div>
         )}
       </div>
 
