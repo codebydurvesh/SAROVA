@@ -11,7 +11,12 @@ import ingredientRoutes from "./routes/ingredientRoutes.js";
 const app = express();
 
 // CORS configuration
-app.use(cors());
+app.use(
+  cors({
+    origin: [process.env.CLIENT_URL || "http://localhost:5173"],
+    credentials: true,
+  })
+);
 
 // Body parser middleware
 app.use(express.json());
