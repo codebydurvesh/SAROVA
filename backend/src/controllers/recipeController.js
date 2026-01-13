@@ -279,11 +279,12 @@ export const seedRecipes = asyncHandler(async (req, res) => {
   // Create a system user for sample recipes if not exists
   let systemUser = await User.findOne({ email: "savora@recipes.com" });
   if (!systemUser) {
-    systemUser = await User.create({
-      name: "SAVORA Kitchen",
-      email: "savora@recipes.com",
-      password: "SavoraSystem123!",
+    res.status(404).json({
+      success: false,
+      message:
+        "System user not found. Please create a user with email savora@recipes.com to seed sample recipes.",
     });
+    return;
   }
 
   const sampleRecipes = [
